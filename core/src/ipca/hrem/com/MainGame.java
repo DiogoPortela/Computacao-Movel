@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ipca.hrem.com.BasicResources.State;
+import ipca.hrem.com.ResourceManagers.TextureManager;
 
 
 /////		----------------//----------------
@@ -19,6 +20,7 @@ public class MainGame extends ApplicationAdapter {
 
     @Override
     public void create() {
+        TextureManager.Start();
         batch = new SpriteBatch();
         currentState = new GameState();
     }
@@ -39,5 +41,6 @@ public class MainGame extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         currentState.dispose();
+        TextureManager.dispose();
     }
 }
