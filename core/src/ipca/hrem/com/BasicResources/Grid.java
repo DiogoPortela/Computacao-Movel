@@ -16,6 +16,11 @@ public class Grid {
     private int gridHeight;
     private int gridWidth;
 
+    //-------------------------GetSetters-------------------------//
+    public GridType getGridType() {
+        return gridType;
+    }
+
     //-------------------------Constructor-------------------------//
     public Grid(GridType gridType, int gridWidth, int gridHeight, Point start) {
         this.gridType = gridType;
@@ -49,5 +54,14 @@ public class Grid {
                 cell.render(batch);
             }
         }
+    }
+
+    public void dispose(){
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = 0; j < gridHeight; j++) {
+                cells[i][j].dispose();
+            }
+        }
+        gridType = null;
     }
 }

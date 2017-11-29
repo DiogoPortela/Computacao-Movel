@@ -7,14 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
-public class GridCell {
+public class GridCell{
 
     public enum CellType {                      //ENUMERATOR FOR ALL CELL TYPES: THIS IS SUPPOSED TO GENERATE THE SPRITE AND STUFF.
-        empty, test, grass, concrete, woodenFloor     //....
+        empty, test, selectedTest, grass, concrete, woodenFloor     //....
     }
 
     //-------------------------Variables-------------------------//
-    private Texture texture;
     private Vector2 position;
     private float scale;
     private Sprite sprite;
@@ -26,7 +25,6 @@ public class GridCell {
     public CellType getCellType() {
         return cellType;
     }
-
     public void setCellType(CellType cellType) {
         this.cellType = cellType;
 
@@ -35,35 +33,41 @@ public class GridCell {
                 break;
             case test:
                 TextureManager.loadTexture("Tile001.png");
-                texture = TextureManager.getTexture("Tile001.png");
+                sprite = new Sprite(TextureManager.getTexture("Tile001.png"));
                 break;
+            case selectedTest:
+                TextureManager.loadTexture("Tile002.png");
+                sprite = new Sprite(TextureManager.getTexture("Tile002.png"));
             case grass:
                 //SET SPRITE AND STATS
-
                 break;
         }
     }
-
-    public boolean isInterior() {
+    public boolean getIsInterior() {
         return isInterior;
+    }
+    public void setIsInterior(boolean interior) {
+        isInterior = interior;
     }
 
     //-------------------------Constructor-------------------------//
     public GridCell(CellType cellType, Vector2 position, float scale) {
         setCellType(cellType);
-        texture = new Texture("Tile001.png");
+        this.position = position;
         this.scale = scale;
-        this.position = position.scl(scale);
+        this.sprite.setPosition(position.x * scale, position.y * scale);
+        this.sprite.setSize(scale, scale);
     }
 
 
     //-------------------------Functions-------------------------//
     public void render(SpriteBatch batch) {
-        batch.draw(texture, position.x, position.y, scale, scale);
-        //batch.draw(texture, position.x, position.y);
+        sprite.draw(batch);
     }
 
-    public void Dispose() {
-
+    public void dispose() {
+        sprite.setTexture(null);
+        position = null;
+        cellType = null;
     }
 }

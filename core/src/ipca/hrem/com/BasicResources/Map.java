@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Map {
 
-    public static final float CELL_SCALE = 100.0f;
+    public static final float CELL_SCALE = 1.0f;
     //-------------------------Variables-------------------------//
     public static Grid fullMap;                 //To use only one instance of cell this grid must contain all cells.
     public static ArrayList<Grid> gridList;     //This will hold all grids that there are on a map. Should not be drawn.
@@ -20,5 +20,10 @@ public class Map {
     //-------------------------Functions-------------------------//
     public void render(SpriteBatch batch){
         fullMap.render(batch);
+    }
+
+    public void dispose(){
+        gridList.clear();
+        fullMap.dispose();
     }
 }
