@@ -31,7 +31,6 @@ public class MainGame extends ApplicationAdapter {
 
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         batch.begin();
         currentState.render(batch);
         batch.end();
@@ -42,5 +41,11 @@ public class MainGame extends ApplicationAdapter {
         batch.dispose();
         currentState.dispose();
         TextureManager.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        currentState.resize(width, height);
     }
 }

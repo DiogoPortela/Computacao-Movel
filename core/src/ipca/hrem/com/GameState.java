@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import ipca.hrem.com.BasicResources.InputManager;
+import ipca.hrem.com.BasicResources.GameViewport;
+import ipca.hrem.com.InputManagers.BasicInput;
+import ipca.hrem.com.InputManagers.InputManager;
 import ipca.hrem.com.BasicResources.Map;
+import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.BasicResources.State;
 
 //GameLogic goes here
@@ -22,13 +24,12 @@ public class GameState extends State  {
     //-------------------------Constructor-------------------------//
     public GameState() {
         currentMap = new Map(20, 20);
-        camera = new OrthographicCamera( 15, (15 * ((float)Gdx.graphics.getHeight() /(float)Gdx.graphics.getWidth())));
+        camera = new OrthographicCamera();
+        currentViewport = new GameViewport(Point.Zero, new Point(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 150),15, (15 * ((float) Gdx.graphics.getHeight() /(float)Gdx.graphics.getWidth())), camera);
+        currentViewport.apply();
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.update();
-        currentViewport = new FitViewport(camera.viewportWidth, camera.viewportHeight, camera);
-        //currentViewport.setScreenPosition( 50, 50);
-        //currentViewport.apply();
-        //currentViewport.update( 500, 500);
+
+        inputManager = new BasicInput(this);
         Gdx.input.setInputProcessor(new GestureDetector(inputManager));
     }
 
@@ -50,5 +51,11 @@ public class GameState extends State  {
         camera = null;
         currentViewport = null;
         currentMap.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        currentViewport.update(width,height);
+        camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
     }
 }

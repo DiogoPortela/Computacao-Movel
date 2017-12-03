@@ -44,7 +44,7 @@ public class Grid {
     public void generateMap(){          //Generates firstMap
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
-                cells[i][j] = new GridCell(GridCell.CellType.test, new Vector2(i,j), (int)Map.CELL_SCALE);
+                cells[i][j] = new GridCell(GridCell.CellType.test, new Vector2(i,j), Map.CELL_SCALE);
             }
         }
     }
