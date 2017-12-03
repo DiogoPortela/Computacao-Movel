@@ -18,14 +18,14 @@ public class GameState extends State  {
     //-------------------------Variables-------------------------//
     public static Map currentMap;
     public static OrthographicCamera camera;
-    private static Viewport currentViewport;
+    private static Viewport currentViewport, currentMenuViewport;
     private static InputManager inputManager;
 
     //-------------------------Constructor-------------------------//
     public GameState() {
         currentMap = new Map(20, 20);
         camera = new OrthographicCamera();
-        currentViewport = new GameViewport(Point.Zero, new Point(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 150),15, (15 * ((float) Gdx.graphics.getHeight() /(float)Gdx.graphics.getWidth())), camera);
+        currentViewport = new GameViewport(new Point(150, 0), new Point(Gdx.graphics.getWidth() - 150, Gdx.graphics.getHeight()),15, (15 * ((float) Gdx.graphics.getHeight() /(float)Gdx.graphics.getWidth())), camera);
         currentViewport.apply();
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
 

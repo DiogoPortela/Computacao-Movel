@@ -11,7 +11,7 @@ public class GameViewport extends Viewport{
     private float worldHeightPermanent;
 
     public GameViewport(Point screenPosition, Point screenSize, float worldWidth, float worldHeight, Camera camera) {
-        float widthRatio = screenSize.X / Gdx.graphics.getBackBufferWidth();
+        float widthRatio = screenSize.X / (float)Gdx.graphics.getBackBufferWidth();
         float heightRatio = screenSize.Y / (float)Gdx.graphics.getBackBufferHeight();
         worldWidthPermanent = worldWidth;
         worldHeightPermanent = worldHeight;
