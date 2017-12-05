@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector3;
 
 import ipca.hrem.com.BasicResources.State;
 import ipca.hrem.com.GameState;
+import ipca.hrem.com.ObjectResources.GameObject;
+import ipca.hrem.com.ObjectResources.Item;
 
 
 public class BasicInput extends InputManager {
@@ -26,11 +28,27 @@ public class BasicInput extends InputManager {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
+        Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
+
         if(x > GameState.getCurrentMenuSize()) {
-            touchPosition = new Vector3(GameState.currentViewport.unproject(new Vector3(x, y, 0)));
+            GameObject gameObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
+            if(currentState.getSelectedObject() == null)
+                currentState.setSelectedObject(gameObjectSelectedThisFrame);
+            else{
+                //SE CARREGARES NO CHAO MOVE.
+                if(gameObjectSelectedThisFrame == null){
+                     currentState.getSelectedObject().act(touchedPositionOnWorld);
+                 }
+                //SE CARREGARES NOUTRO PLAYER SELECIONA-O.
+                else if(gameObjectSelectedThisFrame.getClass() != Item.class){
+                    currentState.setSelectedObject(gameObjectSelectedThisFrame);
+                }
+                else{
+                    //TOCAS NUM ITEM COM UM BONECO SELECTED.
+                }
+            }
         }
-        else
-        {
+        else {
             touchPosition = new Vector3(GameState.currentMenuViewport.unproject(new Vector3(x, y, 0)));
         }
         return true;
