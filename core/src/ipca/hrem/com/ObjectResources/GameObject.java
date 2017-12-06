@@ -7,9 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class GameObject
 {
-    private Sprite sprite;
-    private Vector2 position;
-    private float scale;
+    protected Sprite sprite;
+    protected Vector2 position;
+    protected float scale;
 
     //-------------------------GetSetters-------------------------//
     public Sprite getSprite() {

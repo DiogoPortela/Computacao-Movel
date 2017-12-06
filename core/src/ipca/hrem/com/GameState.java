@@ -1,9 +1,11 @@
 package ipca.hrem.com;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -14,6 +16,9 @@ import ipca.hrem.com.InputManagers.InputManager;
 import ipca.hrem.com.BasicResources.Map;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.BasicResources.State;
+import ipca.hrem.com.ObjectResources.Client;
+import ipca.hrem.com.ObjectResources.Employee;
+import ipca.hrem.com.ObjectResources.GameObject;
 
 //GameLogic goes here
 public class GameState extends State {
@@ -27,6 +32,9 @@ public class GameState extends State {
 
     private static int currentMenuSize;
 
+
+    Client c;
+    Employee e;
     //-------------------------GetSetters-------------------------//
     public static int getCurrentMenuSize() {
         return currentMenuSize;
@@ -54,12 +62,18 @@ public class GameState extends State {
 
         inputManager = new BasicInput(this);
         Gdx.input.setInputProcessor(new GestureDetector(inputManager));
+
+        c = new Client(new Vector2(10, 10),1);
+        this.addGameObject(c);
+        e = new Employee(new Vector2(5, 5), 1);
+        this.addGameObject(e);
     }
 
     //-------------------------Functions-------------------------//
     @Override
     public void update(float gameTime) {
-
+        c.update(gameTime);
+        e.update(gameTime);
     }
 
     @Override
@@ -69,6 +83,15 @@ public class GameState extends State {
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
         currentMap.render(batch);
+        for (GameObject client: touchableClients) {
+            client.render(batch);
+        }
+        for (GameObject employee: touchableEmployees) {
+            employee.render(batch);
+        }
+        for (GameObject item: touchableItems) {
+            item.render(batch);
+        }
         batch.end();
 
         menuCamera.update();

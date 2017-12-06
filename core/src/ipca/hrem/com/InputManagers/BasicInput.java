@@ -30,11 +30,16 @@ public class BasicInput extends InputManager {
     public boolean tap(float x, float y, int count, int button) {
         Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
 
-        if(x > GameState.getCurrentMenuSize()) {
+        if(x > GameState.getCurrentMenuSize()) {            //SE ESTIVER NO VIWEPORT.
             GameObject gameObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
-            if(currentState.getSelectedObject() == null)
+            if(currentState.getSelectedObject() == null)    //SE NAO HOUVER NADA SELECIONADO.
+            {
                 currentState.setSelectedObject(gameObjectSelectedThisFrame);
-            else{
+                if(gameObjectSelectedThisFrame == null){    //SE NAO HOUVE SELECÇAO AGORA.
+                    //select ground floor.
+                }
+            }
+            else{                                           //SE HOUVER ALGO SELECIONADO
                 //SE CARREGARES NO CHAO MOVE.
                 if(gameObjectSelectedThisFrame == null){
                      currentState.getSelectedObject().act(touchedPositionOnWorld);
