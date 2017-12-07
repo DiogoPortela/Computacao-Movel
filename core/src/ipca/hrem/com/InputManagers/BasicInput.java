@@ -15,7 +15,7 @@ public class BasicInput extends InputManager {
     private final float MAX_ZOOM = 3.0f;
     private final float MIN_ZOOM = 0.5f;
     private final float MOVEMENT_SPEED = 0.01f;
-    Vector3 touchPosition;
+    Vector2 touchPosition;
 
     public BasicInput(State currentState) {
         super(currentState);
@@ -28,9 +28,9 @@ public class BasicInput extends InputManager {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
 
         if(x > GameState.getCurrentMenuSize()) {            //SE ESTIVER NO VIWEPORT.
+            Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
             GameObject gameObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
             if(currentState.getSelectedObject() == null)    //SE NAO HOUVER NADA SELECIONADO.
             {
@@ -54,7 +54,7 @@ public class BasicInput extends InputManager {
             }
         }
         else {
-            touchPosition = new Vector3(GameState.currentMenuViewport.unproject(new Vector3(x, y, 0)));
+            touchPosition = new Vector2(GameState.currentMenuViewport.unproject(new Vector2(x, y)));
         }
         return true;
     }

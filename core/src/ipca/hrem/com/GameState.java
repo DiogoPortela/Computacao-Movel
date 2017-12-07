@@ -10,7 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.awt.Button;
+
 import ipca.hrem.com.BasicResources.GameViewport;
+import ipca.hrem.com.BasicResources.GridCell;
 import ipca.hrem.com.InputManagers.BasicInput;
 import ipca.hrem.com.InputManagers.InputManager;
 import ipca.hrem.com.BasicResources.Map;
@@ -23,7 +26,8 @@ import ipca.hrem.com.ObjectResources.GameObject;
 //GameLogic goes here
 public class GameState extends State {
 
-    public final static float gameScale = 15.0f;
+    public final static float gameScaleWidth = 15.0f;
+    public final static float gameScaleHeight = gameScaleWidth * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
     //-------------------------Variables-------------------------//
     public static Map currentMap;
     public static OrthographicCamera gameCamera, menuCamera;
@@ -35,6 +39,8 @@ public class GameState extends State {
 
     Client c;
     Employee e;
+    GridCell test;
+
     //-------------------------GetSetters-------------------------//
     public static int getCurrentMenuSize() {
         return currentMenuSize;
@@ -54,19 +60,24 @@ public class GameState extends State {
         currentMenuSize = 150;
 
         gameCamera = new OrthographicCamera();
-        currentViewport = new GameViewport(new Point(currentMenuSize, 0), new Point(Gdx.graphics.getWidth() - currentMenuSize, Gdx.graphics.getHeight()), gameScale, (gameScale * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth())), gameCamera);
-        gameCamera.position.set(gameCamera.viewportWidth / 2f, gameCamera.viewportHeight / 2f, 0);
+        currentViewport = new GameViewport(new Point(currentMenuSize, 0), new Vector2(Gdx.graphics.getBackBufferWidth() - currentMenuSize, Gdx.graphics.getBackBufferHeight()), gameScaleWidth, gameScaleHeight, gameCamera);
+        currentViewport.apply();
+        gameCamera.position.set(gameCamera.viewportWidth / 2.0f, gameCamera.viewportHeight / 2f, 0);
 
         menuCamera = new OrthographicCamera();
-        currentMenuViewport = new GameViewport(Point.Zero, new Point(currentMenuSize, Gdx.graphics.getHeight()), gameScale, (gameScale * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth())), menuCamera);
+        currentMenuViewport = new GameViewport(Point.Zero, new Vector2(currentMenuSize, Gdx.graphics.getBackBufferHeight()), gameScaleWidth, gameScaleHeight, menuCamera);
+        currentMenuViewport.apply();
+        menuCamera.position.set(menuCamera.viewportWidth / 2f, menuCamera.viewportHeight / 2f, 0);
 
         inputManager = new BasicInput(this);
         Gdx.input.setInputProcessor(new GestureDetector(inputManager));
 
-        c = new Client(new Vector2(10, 10),1);
+        c = new Client(new Vector2(10, 10), 1);
         this.addGameObject(c);
         e = new Employee(new Vector2(5, 5), 1);
         this.addGameObject(e);
+        test = new GridCell(GridCell.CellType.test, new Vector2(currentMenuViewport.getWorldWidth() / 2.0f - 0.5f , gameScaleHeight - 1.2f), 1);
+
     }
 
     //-------------------------Functions-------------------------//
@@ -78,27 +89,27 @@ public class GameState extends State {
 
     @Override
     public void render(SpriteBatch batch) {
-        gameCamera.update();
         currentViewport.apply();
+
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
         currentMap.render(batch);
-        for (GameObject client: touchableClients) {
+        for (GameObject client : touchableClients) {
             client.render(batch);
         }
-        for (GameObject employee: touchableEmployees) {
+        for (GameObject employee : touchableEmployees) {
             employee.render(batch);
         }
-        for (GameObject item: touchableItems) {
+        for (GameObject item : touchableItems) {
             item.render(batch);
         }
         batch.end();
 
-        menuCamera.update();
         currentMenuViewport.apply();
         batch.setProjectionMatrix(menuCamera.combined);
         batch.begin();
         //MenuDraw
+        test.render(batch);
         batch.end();
     }
 
@@ -113,8 +124,7 @@ public class GameState extends State {
 
     @Override
     public void resize(int width, int height) {
-        currentViewport.update(width, height);
-        gameCamera.position.set(gameCamera.viewportWidth / 2, gameCamera.viewportHeight / 2, 0);
-        currentMenuViewport.update(width, height);
+        currentViewport.update(width - currentMenuSize, height, false);
+        currentMenuViewport.update(currentMenuSize, height, false);
     }
 }
