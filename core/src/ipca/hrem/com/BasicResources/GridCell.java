@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
+import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
-public class GridCell{
+public class GridCell extends GameObject{
 
     public enum CellType {                      //ENUMERATOR FOR ALL CELL TYPES: THIS IS SUPPOSED TO GENERATE THE SPRITE AND STUFF.
         empty, test, selectedTest, grass, concrete, woodenFloor     //....
@@ -59,12 +60,19 @@ public class GridCell{
         this.sprite.setSize(scale, scale);
     }
 
+    @Override
+    public void act(Object object) {
+
+    }
+    @Override
+    public void update(float deltaTime) {
+
+    }
 
     //-------------------------Functions-------------------------//
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
     }
-
     public void dispose() {
         sprite.setTexture(null);
         position = null;
