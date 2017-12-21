@@ -11,16 +11,18 @@ import ipca.hrem.com.ObjectResources.Item;
 
 
 public class BasicInput extends InputManager {
-
+    //-------------------------Variables-------------------------//
     private final float MAX_ZOOM = 3.0f;
     private final float MIN_ZOOM = 0.5f;
     private final float MOVEMENT_SPEED = 0.01f;
     Vector2 touchPosition;
 
+    //-------------------------Constructor-------------------------/
     public BasicInput(State currentState) {
         super(currentState);
     }
 
+    //-------------------------Functions-------------------------//
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
         return false;
