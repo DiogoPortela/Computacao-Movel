@@ -1,25 +1,29 @@
 package ipca.hrem.com.InputManagers;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
-import ipca.hrem.com.BasicResources.State;
-import ipca.hrem.com.GameState;
+import ipca.hrem.com.MainGame;
+import ipca.hrem.com.ObjectResources.Client;
+import ipca.hrem.com.ObjectResources.Employee;
+import ipca.hrem.com.ObjectResources.TouchableObject;
+import ipca.hrem.com.States.GameState;
 import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ObjectResources.Item;
 
 
 public class BasicInput extends InputManager {
     //-------------------------Variables-------------------------//
+    private GameState currentGameState;
     private final float MAX_ZOOM = 3.0f;
     private final float MIN_ZOOM = 0.5f;
     private final float MOVEMENT_SPEED = 0.01f;
     Vector2 touchPosition;
 
     //-------------------------Constructor-------------------------/
-    public BasicInput(State currentState) {
-        super(currentState);
+    public BasicInput() {
+        currentGameState = (GameState) MainGame.getCurrentState();
     }
 
     //-------------------------Functions-------------------------//
@@ -33,22 +37,22 @@ public class BasicInput extends InputManager {
 
         if(x > GameState.getCurrentMenuSize()) {            //SE ESTIVER NO VIWEPORT.
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
-            GameObject gameObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
-            if(currentState.getSelectedObject() == null)    //SE NAO HOUVER NADA SELECIONADO.
+            TouchableObject touchableObjectSelectedThisFrame = currentGameState.findTouchedObject(touchedPositionOnWorld);
+            if(currentGameState.getSelectedObject() == null)    //SE NAO HOUVER NADA SELECIONADO.
             {
-                currentState.setSelectedObject(gameObjectSelectedThisFrame);
-                if(gameObjectSelectedThisFrame == null){    //SE NAO HOUVE SELECÇAO AGORA.
+                currentGameState.setSelectedObject(touchableObjectSelectedThisFrame);
+                if(touchableObjectSelectedThisFrame == null){    //SE NAO HOUVE SELECÇAO AGORA.
                     //select ground floor.
                 }
             }
             else{                                           //SE HOUVER ALGO SELECIONADO
                 //SE CARREGARES NO CHAO MOVE.
-                if(gameObjectSelectedThisFrame == null){
-                     currentState.getSelectedObject().act(touchedPositionOnWorld);
+                if(touchableObjectSelectedThisFrame == null && touchableObjectSelectedThisFrame.getClass() == GameObject.class){
+                    ((GameObject)currentGameState.getSelectedObject()).act(touchedPositionOnWorld);
                  }
-                //SE CARREGARES NOUTRO PLAYER SELECIONA-O.
-                else if(gameObjectSelectedThisFrame.getClass() != Item.class){
-                    currentState.setSelectedObject(gameObjectSelectedThisFrame);
+                //SE CARREGARES NOUTRO BONECO SELECIONA-O.
+                else if(touchableObjectSelectedThisFrame.getClass() == Client.class || touchableObjectSelectedThisFrame.getClass() == Employee.class ){
+                    currentGameState.setSelectedObject(touchableObjectSelectedThisFrame);
                 }
                 else{
                     //TOCAS NUM ITEM COM UM BONECO SELECTED.

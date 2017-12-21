@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class GameObject
-{
+public abstract class GameObject extends TouchableObject {
     protected Sprite sprite;
     protected Vector2 position;
     protected float scale;
@@ -45,8 +44,9 @@ public abstract class GameObject
         sprite.draw(batch);
     }
     public void dispose() {
-        sprite.setTexture(null);
+        sprite.getTexture().dispose();
         position = null;
+        scale = 0.0f;
     }
 
 }

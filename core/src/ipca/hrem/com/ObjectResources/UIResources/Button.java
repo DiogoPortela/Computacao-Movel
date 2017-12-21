@@ -1,12 +1,14 @@
-package ipca.hrem.com.ObjectResources;
+package ipca.hrem.com.ObjectResources.UIResources;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
-public class Button extends GameObject {
+public class Button extends   UIObject{
 
+    private Sprite sprite;
     private String text;
 
     public Button(String textureName, Vector2 position, Vector2 size, String text){
@@ -21,13 +23,11 @@ public class Button extends GameObject {
         return sprite.getBoundingRectangle().contains(position);
     }
 
-    @Override
-    public void act(Object object) {
-
+    public void render(SpriteBatch batch){
+        sprite.draw(batch);
+        //DRAW TEXT.
     }
-
-    @Override
-    public void update(float deltaTime) {
-
+    public void dispose() {
+        sprite.getTexture().dispose();
     }
 }

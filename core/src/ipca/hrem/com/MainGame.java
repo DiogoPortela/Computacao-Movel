@@ -5,8 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import ipca.hrem.com.BasicResources.State;
+import ipca.hrem.com.States.State;
 import ipca.hrem.com.ResourceManagers.TextureManager;
+import ipca.hrem.com.States.MenuState;
 
 
 /////		----------------//----------------
@@ -15,14 +16,24 @@ import ipca.hrem.com.ResourceManagers.TextureManager;
 
 
 public class MainGame extends ApplicationAdapter {
-    SpriteBatch batch;
-    public static State currentState;
+    //-------------------------Variables-------------------------//
+    private static SpriteBatch batch;
+    private static State currentState;
+
+    //-------------------------Functions-------------------------//
+
+    public static State getCurrentState(){
+        return currentState;
+    }
+    public static void changeState(State newState){
+        currentState = newState;
+    }
 
     @Override
     public void create() {
         TextureManager.Start();
         batch = new SpriteBatch();
-        currentState = new GameState();
+        currentState = new MenuState();
     }
 
     @Override

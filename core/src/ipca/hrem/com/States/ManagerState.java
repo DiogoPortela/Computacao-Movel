@@ -1,12 +1,8 @@
-package ipca.hrem.com;
+package ipca.hrem.com.States;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import ipca.hrem.com.BasicResources.State;
-
-
-public class BuildState extends State {
-
+public class ManagerState extends State {
     @Override
     public void update(float gameTime) {
 

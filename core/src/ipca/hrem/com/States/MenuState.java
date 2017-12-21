@@ -1,9 +1,6 @@
-package ipca.hrem.com;
+package ipca.hrem.com.States;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-
-import ipca.hrem.com.BasicResources.State;
 
 public class MenuState extends State {
 
