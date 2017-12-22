@@ -3,6 +3,7 @@ package ipca.hrem.com.BasicResources;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -15,6 +16,10 @@ public class GameViewport extends Viewport{
     private float worldHeightPermanent;
 
     //-------------------------Constructor-------------------------/
+    public GameViewport(Point screenPosition, Vector2 screenSize, float worldWidth, float worldHeight) {
+        this(screenPosition, screenSize, worldWidth, worldHeight, new OrthographicCamera());
+    }
+
     public GameViewport(Point screenPosition, Vector2 screenSize, float worldWidth, float worldHeight, Camera camera) {
         float widthRatio = screenSize.x / (float)Gdx.graphics.getBackBufferWidth();
         float heightRatio = screenSize.y / (float)Gdx.graphics.getBackBufferHeight();
