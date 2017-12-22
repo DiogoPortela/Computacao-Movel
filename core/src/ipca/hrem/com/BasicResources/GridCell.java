@@ -33,12 +33,10 @@ public class GridCell extends GameObject{
             case empty:
                 break;
             case test:
-                TextureManager.loadTexture("Tile001.png");
-                sprite = new Sprite(TextureManager.getTexture("Tile001.png"));
+                sprite = new Sprite(TextureManager.loadTexture("Tile001.png"));
                 break;
             case selectedTest:
-                TextureManager.loadTexture("Tile002.png");
-                sprite = new Sprite(TextureManager.getTexture("Tile002.png"));
+                sprite = new Sprite(TextureManager.loadTexture("Tile002.png"));
             case grass:
                 //SET SPRITE AND STATS
                 break;

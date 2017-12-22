@@ -3,6 +3,7 @@ package ipca.hrem.com.ResourceManagers;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
+import java.util.Map;
 
 //Class that hold all textures that are currently being displayed.
 public abstract class TextureManager {
@@ -23,19 +24,20 @@ public abstract class TextureManager {
     }
     public static Texture getTexture(String textureName){
         if(loadedTextures.containsKey(textureName)){
-            return (Texture) loadedTextures.get(textureName);
+            return loadedTextures.get(textureName);
         }
         return null;
     }
-    public static boolean loadTexture(String textureName){
+    public static Texture loadTexture(String textureName){
         if(!loadedTextures.containsKey(textureName)){
             loadedTextures.put(textureName, new Texture(textureName));
-            return true;
+            return loadedTextures.get(textureName);
         }
-        return false;
+        return loadedTextures.get(textureName);
     }
     public static boolean unloadTexture(String textureName){
         if(loadedTextures.containsKey(textureName)){
+            loadedTextures.get(textureName).dispose();
             loadedTextures.remove(textureName);
             return true;
         }
@@ -43,6 +45,9 @@ public abstract class TextureManager {
     }
 
     public static void dispose(){
+        for ( Map.Entry<String, Texture> kv: loadedTextures.entrySet()) {
+            kv.getValue().dispose();
+        }
         loadedTextures.clear();
     }
 }

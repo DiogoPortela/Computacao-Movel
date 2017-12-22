@@ -14,8 +14,7 @@ public class Client extends GameObject {
     //-------------------------Constructor-------------------------/
     public Client(Vector2 position, float scale) {
         super(position, scale);
-        TextureManager.loadTexture("Cliente001.png");
-        sprite = new Sprite(TextureManager.getTexture("Cliente001.png"));
+        sprite = new Sprite(TextureManager.loadTexture("Cliente001.png"));
         sprite.setPosition(position.x * scale, position.y * scale);
         sprite.setSize(scale, scale);
         this.targetPosition = position;

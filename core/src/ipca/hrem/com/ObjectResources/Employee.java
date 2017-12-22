@@ -14,8 +14,7 @@ public class Employee extends GameObject {
     //-------------------------Constructor-------------------------//
     public Employee(Vector2 position, float scale) {
         super(position, scale);
-        TextureManager.loadTexture("Empregado001.png");
-        sprite = new Sprite(TextureManager.getTexture("Empregado001.png"));
+        sprite = new Sprite(TextureManager.loadTexture("Empregado001.png"));
         sprite.setPosition(position.x * scale, position.y * scale);
         sprite.setSize(scale, scale);
         this.targetPosition = position;
