@@ -39,6 +39,12 @@ public abstract class GameObject extends TouchableObject {
 
     //-------------------------Functions-------------------------//
     public abstract void act(Object object);
+
+    @Override
+    public boolean isVectorInside(Vector2 position) {
+        return sprite.getBoundingRectangle().contains(position);
+    }
+
     public abstract void update(float deltaTime);
     public void render(SpriteBatch batch) {
         sprite.draw(batch);

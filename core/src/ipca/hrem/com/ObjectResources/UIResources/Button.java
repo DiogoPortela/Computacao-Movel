@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
-public class Button extends   UIObject{
+public abstract class Button extends UIObject{
 
     private Sprite sprite;
     private String text;
@@ -22,6 +22,8 @@ public class Button extends   UIObject{
     public boolean isVectorInside(Vector2 position){
         return sprite.getBoundingRectangle().contains(position);
     }
+
+    public abstract void onClick();
 
     public void render(SpriteBatch batch){
         sprite.draw(batch);

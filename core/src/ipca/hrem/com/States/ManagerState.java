@@ -3,6 +3,9 @@ package ipca.hrem.com.States;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class ManagerState extends State {
+
+    GameState currentGameState;
+
     @Override
     public void update(float gameTime) {
 

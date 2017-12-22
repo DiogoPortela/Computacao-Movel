@@ -1,12 +1,11 @@
 package ipca.hrem.com.States;
 
-import ipca.hrem.com.InputManagers.InputManager;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 public class BuildState extends GameState {
 
-    public BuildState(int menuSize, InputManager input) {
-        super(menuSize, input);
+    public BuildState() {
     }
 
     @Override
@@ -15,12 +14,12 @@ public class BuildState extends GameState {
     }
 
     @Override
-    protected void renderMenu() {
+    protected void renderMenu(SpriteBatch batch) {
 
     }
 
     @Override
-    protected void renderGame() {
+    protected void renderGame(SpriteBatch batch) {
 
     }
 }

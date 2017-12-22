@@ -1,18 +1,46 @@
 package ipca.hrem.com.States;
 
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+
+
 import ipca.hrem.com.InputManagers.BasicInput;
-import ipca.hrem.com.InputManagers.InputManager;
+import ipca.hrem.com.MainGame;
+import ipca.hrem.com.ObjectResources.GameObject;
+import ipca.hrem.com.ObjectResources.UIResources.Button;
+import ipca.hrem.com.ResourceManagers.FontManager;
 
 public class LiveState extends GameState{
 
+    private Button stopTimeBtn;
+    private Button playTimeBtn;
+    private Button managerStateBtn;
+    private Button buildStateBtn;
+    private Button menuStateBtn;
+    private Label.LabelStyle labelStyle;
 
-    public LiveState(int menuSize, InputManager input) {
-        super(menuSize, input);
+
+    public LiveState(int menuSize) {
+        super(menuSize, new BasicInput());
+        ((BasicInput)inputManager).setCurrentGameState(this);
+        buildStateBtn = new Button("Tile002.png", new Vector2(0,0), new Vector2(1,1), ""){
+
+            @Override
+            public void onClick() {
+                MainGame.setCurrentState(new BuildState());
+            }
+        };
+
+        addUIObject(buildStateBtn);
     }
 
-    public LiveState(BuildState build){
-        super(build.getCurrentMenuSize(), new BasicInput());
+    public LiveState(){
+        inputManager = new BasicInput();
+        ((BasicInput)inputManager).setCurrentGameState(this);
+
     }
 
     @Override
@@ -21,12 +49,15 @@ public class LiveState extends GameState{
     }
 
     @Override
-    protected void renderMenu() {
-
+    protected void renderMenu(SpriteBatch batch) {
+        buildStateBtn.render(batch);
     }
 
     @Override
-    protected void renderGame() {
-
+    protected void renderGame(SpriteBatch batch) {
+        currentMap.render(batch);
+        for (GameObject obj: allGameObjects) {
+            obj.render(batch);                      //OPTIMIZE THIS.
+        }
     }
 }

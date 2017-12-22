@@ -7,63 +7,51 @@ import java.util.ArrayList;
 
 import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ObjectResources.TouchableObject;
+import ipca.hrem.com.ObjectResources.UIResources.Button;
 import ipca.hrem.com.ObjectResources.UIResources.UIObject;
 
 //Base Class for any State, use as an interface.
 public abstract class State {
     //-------------------------Variables-------------------------//
     public TouchableObject selectedObject;
-    protected ArrayList<TouchableObject> touchableUI;
+    protected ArrayList<UIObject> UIObjects;
 
     //-------------------------GetSetters-------------------------//
     public Object getSelectedObject() {
         return selectedObject;
     }
-
     public void setSelectedObject(TouchableObject selectedObject) {
         this.selectedObject = selectedObject;
     }
 
-    protected ArrayList<TouchableObject> getTouchableUI() {
-        return touchableUI;
-    }
 
-    protected void setTouchableUI(ArrayList<TouchableObject> touchableUI) {
-        this.touchableUI = touchableUI;
-    }
 
     //-------------------------Constructor-------------------------//
     public State() {
         selectedObject = null;
-        touchableUI = new ArrayList<TouchableObject>();
-    }
-
-    public State(State lastState) {
-        selectedObject = null;
-        touchableUI = lastState.getTouchableUI();
+        UIObjects = new ArrayList<UIObject>();
     }
 
     //-------------------------Functions-------------------------//
     public boolean addUIObject(UIObject obj) {
-        if (!touchableUI.contains(obj)) {
-            touchableUI.add(obj);
+        if (!UIObjects.contains(obj)) {
+            UIObjects.add(obj);
             return true;
         }
         return false;
     }
-
     public boolean removeUIObject(UIObject obj) {
-        if (touchableUI.contains(obj)) {
-            touchableUI.remove(obj);
+        if (UIObjects.contains(obj)) {
+            UIObjects.remove(obj);
             return true;
         }
         return false;
     }
 
     public UIObject findTouchedObject(Vector2 worldPosition) {
-        for (TouchableObject obj : touchableUI) {
+        for (UIObject obj : UIObjects) {
             if (obj.isVectorInside(worldPosition))
-                return (UIObject)obj;
+                return obj;
         }
         return null;
     }
@@ -73,7 +61,7 @@ public abstract class State {
     public abstract void render(SpriteBatch spriteBatch);
 
     public void dispose() {
-        for (TouchableObject obj : touchableUI) {
+        for (UIObject obj : UIObjects) {
             obj.dispose();
         }
     }

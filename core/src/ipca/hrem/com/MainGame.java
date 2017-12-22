@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import ipca.hrem.com.States.GameState;
 import ipca.hrem.com.States.State;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 import ipca.hrem.com.States.MenuState;
@@ -20,14 +21,16 @@ public class MainGame extends ApplicationAdapter {
     private static SpriteBatch batch;
     private static State currentState;
 
-    //-------------------------Functions-------------------------//
-
-    public static State getCurrentState(){
+    //-------------------------GetSetters-------------------------//
+    public static State getCurrentState() {
         return currentState;
     }
-    public static void changeState(State newState){
+
+    public static void setCurrentState(State newState) {
         currentState = newState;
     }
+
+    //-------------------------Functions-------------------------//
 
     @Override
     public void create() {

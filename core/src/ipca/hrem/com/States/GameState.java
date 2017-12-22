@@ -7,22 +7,28 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+
 import ipca.hrem.com.BasicResources.GameViewport;
 import ipca.hrem.com.InputManagers.InputManager;
 import ipca.hrem.com.BasicResources.Map;
 import ipca.hrem.com.BasicResources.Point;
+import ipca.hrem.com.ObjectResources.GameObject;
 
 //GameLogic goes here
 public abstract class GameState extends State {
 
     public final static float gameScaleWidth = 15.0f;
     public final static float gameScaleHeight = gameScaleWidth * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
+
     //-------------------------Variables-------------------------//
     public static Map currentMap;
     public static OrthographicCamera gameCamera, menuCamera;
     public static Viewport currentViewport, currentMenuViewport;
-    private static InputManager inputManager;
+    protected static InputManager inputManager;
 
+    protected static ArrayList<GameObject> allGameObjects;
+    protected static float timeSpeed;
     private static int currentMenuSize;
 
     //-------------------------GetSetters-------------------------//
@@ -30,7 +36,7 @@ public abstract class GameState extends State {
         return currentMenuSize;
     }
 
-    public void setCurrentMenuSize(int menuSize) {
+    public static void setCurrentMenuSize(int menuSize) {
         currentMenuSize = menuSize;
         currentViewport.setScreenPosition(currentMenuSize, 0);
         currentViewport.setScreenWidth(Gdx.graphics.getBackBufferWidth() - currentMenuSize);
@@ -56,6 +62,13 @@ public abstract class GameState extends State {
 
         inputManager = input;
         Gdx.input.setInputProcessor(new GestureDetector(inputManager));
+
+        allGameObjects = new ArrayList<GameObject>();
+        timeSpeed = 1.0f;
+    }
+
+    public GameState(){
+
     }
 
     //-------------------------Functions-------------------------//
@@ -66,19 +79,19 @@ public abstract class GameState extends State {
         batch.setProjectionMatrix(gameCamera.combined);
         batch.begin();
         currentMap.render(batch);
-        renderGame();
+        renderGame(batch);
         batch.end();
 
         currentMenuViewport.apply();
         batch.setProjectionMatrix(menuCamera.combined);
         batch.begin();
-        renderMenu();
+        renderMenu(batch);
         batch.end();
     }
 
-    protected abstract void renderMenu();
-    protected abstract void renderGame();
+    protected abstract void renderMenu(SpriteBatch batch);
 
+    protected abstract void renderGame(SpriteBatch batch);
 
     @Override
     public void dispose() {

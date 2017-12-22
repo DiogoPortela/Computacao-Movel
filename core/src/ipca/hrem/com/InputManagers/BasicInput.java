@@ -8,6 +8,8 @@ import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.Employee;
 import ipca.hrem.com.ObjectResources.TouchableObject;
+import ipca.hrem.com.ObjectResources.UIResources.Button;
+import ipca.hrem.com.ObjectResources.UIResources.UIObject;
 import ipca.hrem.com.States.GameState;
 import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ObjectResources.Item;
@@ -21,9 +23,13 @@ public class BasicInput extends InputManager {
     private final float MOVEMENT_SPEED = 0.01f;
     Vector2 touchPosition;
 
+    //-------------------------GetSetters-------------------------//
+    public void setCurrentGameState(GameState currentGameState) {
+        this.currentGameState = currentGameState;
+    }
+
     //-------------------------Constructor-------------------------/
     public BasicInput() {
-        currentGameState = (GameState) MainGame.getCurrentState();
     }
 
     //-------------------------Functions-------------------------//
@@ -35,32 +41,33 @@ public class BasicInput extends InputManager {
     @Override
     public boolean tap(float x, float y, int count, int button) {
 
-        if(x > GameState.getCurrentMenuSize()) {            //SE ESTIVER NO VIWEPORT.
+        if (x > GameState.getCurrentMenuSize()) {            //SE ESTIVER NO VIWEPORT.
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
             TouchableObject touchableObjectSelectedThisFrame = currentGameState.findTouchedObject(touchedPositionOnWorld);
-            if(currentGameState.getSelectedObject() == null)    //SE NAO HOUVER NADA SELECIONADO.
+            if (currentGameState.getSelectedObject() == null)    //SE NAO HOUVER NADA SELECIONADO.
             {
                 currentGameState.setSelectedObject(touchableObjectSelectedThisFrame);
-                if(touchableObjectSelectedThisFrame == null){    //SE NAO HOUVE SELECÇAO AGORA.
+                if (touchableObjectSelectedThisFrame == null) {    //SE NAO HOUVE SELECÇAO AGORA.
                     //select ground floor.
                 }
-            }
-            else{                                           //SE HOUVER ALGO SELECIONADO
+            } else {                                           //SE HOUVER ALGO SELECIONADO
                 //SE CARREGARES NO CHAO MOVE.
-                if(touchableObjectSelectedThisFrame == null && touchableObjectSelectedThisFrame.getClass() == GameObject.class){
-                    ((GameObject)currentGameState.getSelectedObject()).act(touchedPositionOnWorld);
-                 }
-                //SE CARREGARES NOUTRO BONECO SELECIONA-O.
-                else if(touchableObjectSelectedThisFrame.getClass() == Client.class || touchableObjectSelectedThisFrame.getClass() == Employee.class ){
-                    currentGameState.setSelectedObject(touchableObjectSelectedThisFrame);
+                if (touchableObjectSelectedThisFrame == null && touchableObjectSelectedThisFrame instanceof GameObject) {
+                    ((GameObject) currentGameState.getSelectedObject()).act(touchedPositionOnWorld);
                 }
-                else{
+                //SE CARREGARES NOUTRO BONECO SELECIONA-O.
+                else if (touchableObjectSelectedThisFrame instanceof Client || touchableObjectSelectedThisFrame instanceof Employee) {
+                    currentGameState.setSelectedObject(touchableObjectSelectedThisFrame);
+                } else {
                     //TOCAS NUM ITEM COM UM BONECO SELECTED.
                 }
             }
-        }
-        else {
-            touchPosition = new Vector2(GameState.currentMenuViewport.unproject(new Vector2(x, y)));
+        } else {
+            Vector2 touchedPositionOnWorld = new Vector2(GameState.currentMenuViewport.unproject(new Vector2(x, y)));
+            UIObject touchableObjectSelectedThisFrame = currentGameState.findTouchedObject(touchedPositionOnWorld);
+            if (touchableObjectSelectedThisFrame instanceof Button)
+                ((Button) touchableObjectSelectedThisFrame).onClick();
+
         }
         return true;
     }
@@ -77,7 +84,7 @@ public class BasicInput extends InputManager {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-        if(x > GameState.getCurrentMenuSize()){
+        if (x > GameState.getCurrentMenuSize()) {
             GameState.gameCamera.translate(deltaX * -MOVEMENT_SPEED * GameState.gameCamera.zoom, deltaY * MOVEMENT_SPEED * GameState.gameCamera.zoom);
             return true;
         }
