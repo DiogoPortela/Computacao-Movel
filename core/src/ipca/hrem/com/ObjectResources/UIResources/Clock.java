@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.time.LocalTime;
 
+import ipca.hrem.com.BasicResources.Date;
 import ipca.hrem.com.BasicResources.Point;
 
 
@@ -63,8 +64,26 @@ public class Clock extends UIObject {
         digit.changeRegion(new Vector2(12 * digitValue, 0), digitSize);
     }
 
-    public void update(LocalTime time) {
+    public void update(Date time) {
+        if(time.getMinute() >= 10) {
+            int decimal = (int)(time.getMinute() * 0.1f);
+            ChangeDigit(forthDigit, time.getMinute() - decimal * 10);
+            ChangeDigit(thirdDigit, decimal);
+        }
+        else {
+            ChangeDigit(forthDigit, time.getMinute());
+            ChangeDigit(thirdDigit,0);
+        }
 
+        if(time.getHour() >= 10) {
+            int decimal = (int)(time.getHour() * 0.1f);
+            ChangeDigit(secondDigit, time.getHour() - decimal * 10);
+            ChangeDigit(firstDigit, decimal);
+        }
+        else {
+            ChangeDigit(secondDigit, time.getHour());
+            ChangeDigit(firstDigit,0);
+        }
     }
 
     @Override

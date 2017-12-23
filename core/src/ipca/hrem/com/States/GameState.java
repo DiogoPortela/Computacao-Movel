@@ -3,19 +3,14 @@ package ipca.hrem.com.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
+import ipca.hrem.com.BasicResources.Date;
 import ipca.hrem.com.BasicResources.GameViewport;
-import ipca.hrem.com.InputManagers.GameInput;
-import ipca.hrem.com.InputManagers.InputManager;
 import ipca.hrem.com.BasicResources.Map;
 import ipca.hrem.com.BasicResources.Point;
-import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ObjectResources.UIResources.StaticTexture;
 
@@ -33,12 +28,12 @@ public abstract class GameState extends State {
     private static float currentMenuSizeWorld;
 
     protected static Float timeSpeed;
+    protected static Date date;
 
     protected static ArrayList<GameObject> allGameObjects;
 
     private static StaticTexture menuBar;
     private static StaticTexture menuBackground;
-    //private static Label timeLabel;
 
     //-------------------------GetSetters-------------------------//
     public static int getCurrentMenuSizeScreen() {
@@ -81,6 +76,7 @@ public abstract class GameState extends State {
 
         allGameObjects = new ArrayList<GameObject>();
         timeSpeed = 1.0f;
+        date = new Date();
 
         menuBar = new StaticTexture("MenuBar.png", new Vector2(currentMenuSizeWorld - 0.5f, 0), new Vector2(0.5f, gameScaleHeight));
         menuBackground = new StaticTexture("MenuColorPixel.png", new Vector2(0, 0), new Vector2(currentMenuSizeWorld - 0.5f, gameScaleHeight));
@@ -92,6 +88,8 @@ public abstract class GameState extends State {
     }
 
     //-------------------------Functions-------------------------//
+
+
     @Override
     public void render(SpriteBatch batch) {
         currentViewport.apply();

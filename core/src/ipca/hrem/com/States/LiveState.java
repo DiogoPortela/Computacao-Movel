@@ -39,7 +39,8 @@ public class LiveState extends GameState {
 
     @Override
     public void update(float gameTime) {
-
+        date.gameUpdate(gameTime);
+        clock.update(date);
     }
 
     @Override
