@@ -34,16 +34,16 @@ public class GameViewport extends Viewport{
     //-------------------------Functions-------------------------//
     @Override
     public void update(int screenWidth, int screenHeight, boolean centerCamera) {
-        super.update(screenWidth, screenHeight, centerCamera);
         float widthRatio = screenWidth / (float)Gdx.graphics.getBackBufferWidth();
         float heightRatio = screenHeight / (float)Gdx.graphics.getBackBufferHeight();
         setWorldSize(worldWidthPermanent * widthRatio, worldHeightPermanent * heightRatio);
+        super.update(screenWidth, screenHeight, centerCamera);
     }
     public  void update(Point screenPosition, Point screenSize){
-        super.update(screenSize.X, screenSize.Y, false);
         float widthRatio = screenSize.X / (float)Gdx.graphics.getBackBufferWidth();
         float heightRatio = screenSize.Y / (float)Gdx.graphics.getBackBufferHeight();
         setWorldSize(worldWidthPermanent * widthRatio, worldHeightPermanent * heightRatio);
         setScreenBounds(screenPosition.X, screenPosition.Y, screenSize.X, screenSize.Y);
+        super.update(screenSize.X, screenSize.Y, false);
     }
 }

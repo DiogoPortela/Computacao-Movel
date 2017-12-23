@@ -33,7 +33,7 @@ public class MenuState extends State {
         playBtn = new Button("Tile002.png", new Vector2( getCurrentViewport().getWorldWidth() / 2.0f - 0.5f,getCurrentViewport().getWorldHeight() / 2.0f - 0.5f), new Vector2(1, 1), ""){
             @Override
             public void onClick() {
-                MainGame.setCurrentState(new LiveState(150));
+                MainGame.setCurrentState(new LiveState(2.5f));
             }
         };
         addUIObject(playBtn);

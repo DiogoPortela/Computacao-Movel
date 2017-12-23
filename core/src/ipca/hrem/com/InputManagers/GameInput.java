@@ -19,9 +19,9 @@ public class GameInput extends InputManager {
     private final float MIN_ZOOM = 0.5f;
     private final float MOVEMENT_SPEED = 0.01f;
 
-    //-------------------------GetSetters-------------------------//
-    public void setCurrentGameState(GameState currentGameState) {
-        this.currentGameState = currentGameState;
+    //-------------------------Constructor-------------------------//
+    public GameInput(GameState currentState){
+        currentGameState = currentState;
     }
 
     //-------------------------Functions-------------------------//

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import ipca.hrem.com.BasicResources.Map;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.GameObject;
+import ipca.hrem.com.ObjectResources.UIResources.StaticTexture;
 
 //GameLogic goes here
 public abstract class GameState extends State {
@@ -26,43 +28,60 @@ public abstract class GameState extends State {
     //-------------------------Variables-------------------------//
     public static Map currentMap;
     public static OrthographicCamera gameCamera, menuCamera;
-    public static Viewport currentViewport, currentMenuViewport;
+    public static GameViewport currentViewport, currentMenuViewport;
+    private static int currentMenuSizeScreen;
+    private static float currentMenuSizeWorld;
+
+    protected static Float timeSpeed;
 
     protected static ArrayList<GameObject> allGameObjects;
-    protected static float timeSpeed;
-    private static int currentMenuSize;
+
+    private static StaticTexture menuBar;
+    private static StaticTexture menuBackground;
+    //private static Label timeLabel;
 
     //-------------------------GetSetters-------------------------//
     public static int getCurrentMenuSize() {
-        return currentMenuSize;
+        return currentMenuSizeScreen;
     }
 
-    public static void setCurrentMenuSize(int menuSize) {
-        currentMenuSize = menuSize;
-        currentViewport.setScreenPosition(currentMenuSize, 0);
-        currentViewport.setScreenWidth(Gdx.graphics.getBackBufferWidth() - currentMenuSize);
+    public static void setCurrentMenuSize(float menuSize) {
+        currentMenuSizeWorld = menuSize;
+        currentMenuSizeScreen = (int)(menuSize * Gdx.graphics.getBackBufferWidth() / gameScaleWidth);
+        //currentViewport.setScreenPosition(currentMenuSizeScreen, 0);
+        //currentViewport.setScreenWidth(Gdx.graphics.getBackBufferWidth() - currentMenuSizeScreen);
 
-        currentMenuViewport.setScreenWidth(currentMenuSize);
+        //currentMenuViewport.setScreenWidth(currentMenuSizeScreen);
+
+        currentViewport.update(new Point(currentMenuSizeScreen, 0), new Point(Gdx.graphics.getBackBufferWidth() - currentMenuSizeScreen, Gdx.graphics.getBackBufferHeight()));
+        currentMenuViewport.update(Point.Zero, new Point(currentMenuSizeScreen,  Gdx.graphics.getBackBufferHeight()));
+        gameCamera.update();
+        menuCamera.update();
     }
 
     //-------------------------Constructor-------------------------//
-    public GameState(int menuSize) {
+    public GameState(float menuSize) {
         currentMap = new Map(20, 20);
 
         gameCamera = new OrthographicCamera();
-
-        currentMenuSize = menuSize;
-        currentViewport = new GameViewport(new Point(currentMenuSize, 0), new Vector2(Gdx.graphics.getBackBufferWidth() - currentMenuSize, Gdx.graphics.getBackBufferHeight()), gameScaleWidth, gameScaleHeight, gameCamera);
+        currentViewport = new GameViewport(Point.Zero, new Vector2(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight()), gameScaleWidth, gameScaleHeight, gameCamera);
         currentViewport.apply();
-        gameCamera.position.set(gameCamera.viewportWidth / 2.0f, gameCamera.viewportHeight / 2f, 0);
 
         menuCamera = new OrthographicCamera();
-        currentMenuViewport = new GameViewport(Point.Zero, new Vector2(currentMenuSize, Gdx.graphics.getBackBufferHeight()), gameScaleWidth, gameScaleHeight, menuCamera);
+        currentMenuViewport = new GameViewport(Point.Zero, new Vector2(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight()), gameScaleWidth, gameScaleHeight, menuCamera);
         currentMenuViewport.apply();
-        menuCamera.position.set(menuCamera.viewportWidth / 2f, menuCamera.viewportHeight / 2f, 0);
+        setCurrentMenuSize(menuSize);
+
+        gameCamera.position.set(gameCamera.viewportWidth / 2.0f, gameCamera.viewportHeight / 2.0f, 0);
+        menuCamera.position.set(menuCamera.viewportWidth / 2.0f, menuCamera.viewportHeight / 2.0f, 0);
 
         allGameObjects = new ArrayList<GameObject>();
         timeSpeed = 1.0f;
+
+        menuBar = new StaticTexture("MenuBar.png", new Vector2(currentMenuSizeWorld - 0.5f, 0), new Vector2(0.5f, gameScaleHeight));
+        menuBackground = new StaticTexture("MenuColorPixel.png", new Vector2(0, 0), new Vector2(currentMenuSizeWorld - 0.5f, gameScaleHeight));
+        //timeLabel = new Label(timeSpeed.toString(), MainGame.testLabel);
+        //timeLabel.setPosition(2,2);
     }
 
     public GameState() {
@@ -81,6 +100,9 @@ public abstract class GameState extends State {
         currentMenuViewport.apply();
         batch.setProjectionMatrix(menuCamera.combined);
         batch.begin();
+        menuBar.render(batch);
+        menuBackground.render(batch);
+        //timeLabel.draw(batch, 1);
         renderMenu(batch);
         batch.end();
     }
@@ -100,11 +122,13 @@ public abstract class GameState extends State {
             obj.dispose();
         }
         allGameObjects.clear();
+        menuBar.dispose();
+        menuBackground.dispose();
     }
 
     @Override
     public void resize(int width, int height) {
-        currentViewport.update(width - currentMenuSize, height, false);
-        currentMenuViewport.update(currentMenuSize, height, false);
+        currentViewport.update(width - currentMenuSizeScreen, height, false);
+        currentMenuViewport.update(currentMenuSizeScreen, height, false);
     }
 }

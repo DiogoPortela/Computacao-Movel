@@ -11,8 +11,8 @@ public class MenuInput extends InputManager{
     //-------------------------Variables-------------------------//
     private MenuState currentState;
 
-    //-------------------------GetSetters-------------------------//
-    public void setCurrentState(MenuState currentState) {
+    //-------------------------Constructor-------------------------//
+    public MenuInput(MenuState currentState){
         this.currentState = currentState;
     }
 

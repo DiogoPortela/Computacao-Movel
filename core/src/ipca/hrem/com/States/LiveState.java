@@ -18,7 +18,7 @@ public class LiveState extends GameState {
     private Label.LabelStyle labelStyle;
 
 
-    public LiveState(int menuSize) {
+    public LiveState(float menuSize) {
         super(menuSize);
         buildStateBtn = new Button("Tile002.png", new Vector2(0, 0), new Vector2(1, 1), "") {
 
