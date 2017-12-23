@@ -41,8 +41,12 @@ public abstract class GameState extends State {
     //private static Label timeLabel;
 
     //-------------------------GetSetters-------------------------//
-    public static int getCurrentMenuSize() {
+    public static int getCurrentMenuSizeScreen() {
         return currentMenuSizeScreen;
+    }
+
+    public static float getCurrentMenuSizeWorld() {
+        return currentMenuSizeWorld;
     }
 
     public static void setCurrentMenuSize(float menuSize) {
@@ -61,7 +65,7 @@ public abstract class GameState extends State {
 
     //-------------------------Constructor-------------------------//
     public GameState(float menuSize) {
-        currentMap = new Map(20, 20);
+        currentMap = new Map(30, 30);
 
         gameCamera = new OrthographicCamera();
         currentViewport = new GameViewport(Point.Zero, new Vector2(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight()), gameScaleWidth, gameScaleHeight, gameCamera);

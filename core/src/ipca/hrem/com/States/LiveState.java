@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ObjectResources.UIResources.Button;
+import ipca.hrem.com.ObjectResources.UIResources.Clock;
 
 public class LiveState extends GameState {
 
@@ -16,12 +17,14 @@ public class LiveState extends GameState {
     private Button buildStateBtn;
     private Button menuStateBtn;
     private Label.LabelStyle labelStyle;
+    private Clock clock;
 
 
     public LiveState(float menuSize) {
         super(menuSize);
-        buildStateBtn = new Button("Tile002.png", new Vector2(0, 0), new Vector2(1, 1), "") {
+        clock = new Clock(new Vector2(0.1f, GameState.gameScaleHeight - 1.2f), new Vector2(2.0f, 1.0f));
 
+        buildStateBtn = new Button("ButtonBackground.png", new Vector2(0, 0), new Vector2(2.0f, 1.0f), "") {
             @Override
             public void onClick() {
                 MainGame.setCurrentState(new BuildState());
@@ -42,6 +45,7 @@ public class LiveState extends GameState {
     @Override
     protected void renderMenu(SpriteBatch batch) {
         buildStateBtn.render(batch);
+        clock.render(batch);
     }
 
     @Override

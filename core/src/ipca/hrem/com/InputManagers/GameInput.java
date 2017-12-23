@@ -33,7 +33,7 @@ public class GameInput extends InputManager {
     @Override
     public boolean tap(float x, float y, int count, int button) {
 
-        if (x > GameState.getCurrentMenuSize()) {            //SE ESTIVER NO VIWEPORT.
+        if (x > GameState.getCurrentMenuSizeScreen()) {            //SE ESTIVER NO VIWEPORT.
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
             TouchableObject touchableObjectSelectedThisFrame = currentGameState.findTouchedObject(touchedPositionOnWorld);
             if (currentGameState.getSelectedObject() == null)    //SE NAO HOUVER NADA SELECIONADO.
@@ -76,7 +76,7 @@ public class GameInput extends InputManager {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-        if (x > GameState.getCurrentMenuSize()) {
+        if (x > GameState.getCurrentMenuSizeScreen()) {
             GameState.gameCamera.translate(deltaX * -MOVEMENT_SPEED * GameState.gameCamera.zoom, deltaY * MOVEMENT_SPEED * GameState.gameCamera.zoom);
             return true;
         }
