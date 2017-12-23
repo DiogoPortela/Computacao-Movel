@@ -1,11 +1,9 @@
-package ipca.hrem.com.BasicResources;
+package ipca.hrem.com.ObjectResources;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
 public class GridCell extends GameObject{

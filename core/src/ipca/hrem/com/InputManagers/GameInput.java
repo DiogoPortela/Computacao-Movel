@@ -1,10 +1,8 @@
 package ipca.hrem.com.InputManagers;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.Employee;
 import ipca.hrem.com.ObjectResources.TouchableObject;
@@ -12,24 +10,18 @@ import ipca.hrem.com.ObjectResources.UIResources.Button;
 import ipca.hrem.com.ObjectResources.UIResources.UIObject;
 import ipca.hrem.com.States.GameState;
 import ipca.hrem.com.ObjectResources.GameObject;
-import ipca.hrem.com.ObjectResources.Item;
 
 
-public class BasicInput extends InputManager {
+public class GameInput extends InputManager {
     //-------------------------Variables-------------------------//
     private GameState currentGameState;
     private final float MAX_ZOOM = 3.0f;
     private final float MIN_ZOOM = 0.5f;
     private final float MOVEMENT_SPEED = 0.01f;
-    Vector2 touchPosition;
 
     //-------------------------GetSetters-------------------------//
     public void setCurrentGameState(GameState currentGameState) {
         this.currentGameState = currentGameState;
-    }
-
-    //-------------------------Constructor-------------------------/
-    public BasicInput() {
     }
 
     //-------------------------Functions-------------------------//

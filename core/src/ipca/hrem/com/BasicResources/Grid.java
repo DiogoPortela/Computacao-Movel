@@ -4,6 +4,8 @@ package ipca.hrem.com.BasicResources;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
+import ipca.hrem.com.ObjectResources.GridCell;
+
 // Class that holds a group of cells as a grid.
 public class Grid {
     public enum GridType {              //ENUMERATOR FOR ALL GRID TYPES
