@@ -27,7 +27,7 @@ public abstract class GameState extends State {
     private static int currentMenuSizeScreen;
     private static float currentMenuSizeWorld;
 
-    protected static Float timeSpeed;
+    protected static float timeSpeed;
     protected static Date date;
 
     protected static ArrayList<GameObject> allGameObjects;
@@ -88,8 +88,6 @@ public abstract class GameState extends State {
     }
 
     //-------------------------Functions-------------------------//
-
-
     @Override
     public void render(SpriteBatch batch) {
         currentViewport.apply();
@@ -108,10 +106,6 @@ public abstract class GameState extends State {
         renderMenu(batch);
         batch.end();
     }
-
-    protected abstract void renderMenu(SpriteBatch batch);
-
-    protected abstract void renderGame(SpriteBatch batch);
 
     @Override
     public void dispose() {
@@ -133,4 +127,9 @@ public abstract class GameState extends State {
         currentViewport.update(width - currentMenuSizeScreen, height, false);
         currentMenuViewport.update(currentMenuSizeScreen, height, false);
     }
+
+    //-------------------------Abstracts-------------------------//
+    protected abstract void renderMenu(SpriteBatch batch);
+
+    protected abstract void renderGame(SpriteBatch batch);
 }
