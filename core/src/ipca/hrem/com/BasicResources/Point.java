@@ -3,7 +3,7 @@ package ipca.hrem.com.BasicResources;
 
 import com.badlogic.gdx.math.Vector2;
 
-//Vector2 but whit ints.
+//Vector2 but with integers.
 public class Point {
     //-------------------------Variables-------------------------//
     public int X;
