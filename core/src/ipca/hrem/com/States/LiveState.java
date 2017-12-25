@@ -2,7 +2,6 @@ package ipca.hrem.com.States;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.GameObject;
@@ -16,32 +15,40 @@ public class LiveState extends GameState {
     private Button managerStateBtn;
     private Button buildStateBtn;
     private Button menuStateBtn;
-    private Label.LabelStyle labelStyle;
     private Clock clock;
     //-------------------------GetSetters-------------------------//
 
     //-------------------------Constructor-------------------------//
     public LiveState(float menuSize) {
         super(menuSize);
+        onCreate();
+    }
+
+    public LiveState() {
+        setCurrentMenuSize(2.5f);
+        onCreate();
+    }
+
+    //-------------------------Functions-------------------------//
+
+    private void onCreate(){
         clock = new Clock(new Vector2(0.1f, GameState.gameScaleHeight - 1.2f), new Vector2(2.0f, 1.0f));
 
-
-        timeBtn = new Button("ButtonStop.png", new Vector2(0.05f, clock.getPosition().y - 1.2f), new Vector2(1.0f, 1.0f)) {
+        timeBtn = new Button(new Vector2(0.05f, clock.getPosition().y - 1.2f), new Vector2(1.0f, 1.0f), new Vector2( 32 , 0), new Vector2(32, 32)) {
             @Override
             public void onClick() {
                 if (timeSpeed > 0) {
                     timeSpeed = 0;
-                    this.changeTexture("ButtonPlay.png");
+                    this.changeTexture(new Vector2(0,0), new Vector2(32, 32));
                 } else {
                     timeSpeed = 1;
-                    this.changeTexture("ButtonStop.png");
+                    this.changeTexture(new Vector2(32,0), new Vector2(32, 32));
                 }
-
             }
         };
         addUIObject(timeBtn);
 
-        timeFastBtn = new Button("ButtonFastForward.png", new Vector2(1.1f, clock.getPosition().y - 1.2f), new Vector2(1.0f, 1.0f)) {
+        timeFastBtn = new Button( new Vector2(1.1f, clock.getPosition().y - 1.2f), new Vector2(1.0f, 1.0f), new Vector2(64, 0), new Vector2(32, 32)) {
             @Override
             public void onClick() {
                 if (timeSpeed == 1) {
@@ -55,7 +62,7 @@ public class LiveState extends GameState {
         };
         addUIObject(timeFastBtn);
 
-        buildStateBtn = new Button("ButtonBuild.png", new Vector2(0.1f, timeBtn.getPosition().y - 1.1f), new Vector2(2.0f, 1.0f)) {
+        buildStateBtn = new Button(new Vector2(0.1f, timeBtn.getPosition().y - 1.1f), new Vector2(2.0f, 1.0f), new Vector2(0, 32 ), new Vector2(64, 32)) {
             @Override
             public void onClick() {
                 MainGame.setCurrentState(new BuildState());
@@ -63,31 +70,40 @@ public class LiveState extends GameState {
         };
         addUIObject(buildStateBtn);
 
+        managerStateBtn = new Button(new Vector2(0.1f, buildStateBtn.getPosition().y - 1.1f), new Vector2(2.0f, 1.0f), new Vector2(64, 32 ), new Vector2(64, 32)) {
+            @Override
+            public void onClick() {
+            }
+        };
+        addUIObject(managerStateBtn);
+
+        menuStateBtn = new Button(new Vector2(0.1f, 0.1f), new Vector2(2.0f, 1.0f), new Vector2(0, 64 ), new Vector2(64, 32)) {
+            @Override
+            public void onClick() {
+            }
+        };
+        addUIObject(menuStateBtn);
     }
 
-    public LiveState() {
-
-    }
-
-    //-------------------------Functions-------------------------//
     @Override
     public void update(float gameTime) {
-        date.gameUpdate(gameTime * timeSpeed);
-        clock.update(date);
+        MainGame.currentPlayer.date.gameUpdate(gameTime * timeSpeed);
+        clock.update(MainGame.currentPlayer.date);
     }
 
     @Override
     protected void renderMenu(SpriteBatch batch) {
-        buildStateBtn.render(batch);
+        clock.render(batch);
         timeBtn.render(batch);
         timeFastBtn.render(batch);
-        clock.render(batch);
+        buildStateBtn.render(batch);
+        managerStateBtn.render(batch);
+        menuStateBtn.render(batch);
     }
 
     @Override
     protected void renderGame(SpriteBatch batch) {
-        currentMap.render(batch);
-        for (GameObject obj : allGameObjects) {
+        for (GameObject obj : MainGame.currentPlayer.allGameObjects) {
             obj.render(batch);                      //OPTIMIZE THIS.
         }
     }

@@ -1,14 +1,12 @@
 package ipca.hrem.com.ObjectResources.UIResources;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import java.time.LocalTime;
-
 import ipca.hrem.com.BasicResources.Date;
-import ipca.hrem.com.BasicResources.Point;
+import ipca.hrem.com.ResourceManagers.TextureManager;
 
 
 public class Clock extends UIObject {
@@ -17,15 +15,13 @@ public class Clock extends UIObject {
 
     //-------------------------Variables-------------------------//
     private Vector2 position;
-    private String clockTexture;
-    private StaticTexture backgroundTexture;
-    private AnimatedTexture firstDigit;
-    private AnimatedTexture secondDigit;
-    private AnimatedTexture thirdDigit;
-    private AnimatedTexture forthDigit;
-    private AnimatedTexture middleDots;
-
-
+    private Texture clockTexture;
+    private Sprite backgroundTexture;
+    private Sprite firstDigit;
+    private Sprite secondDigit;
+    private Sprite thirdDigit;
+    private Sprite forthDigit;
+    private Sprite middleDots;
 
     //-------------------------GetSetters-------------------------//
     public Vector2 getPosition() {
@@ -40,8 +36,10 @@ public class Clock extends UIObject {
     //-------------------------Constructor-------------------------//
     public Clock(Vector2 position, Vector2 size) {
         this.position = position;
-        backgroundTexture = new StaticTexture("ClockAssets/ClockBackground.png", position, size);
-        clockTexture = "ClockAssets/ClockNumbers.png";
+        backgroundTexture = new Sprite(TextureManager.loadTexture("ClockAssets/ClockBackground.png"));
+        backgroundTexture.setPosition(position.x, position.y);
+        backgroundTexture.setSize(size.x, size.y);
+        clockTexture = TextureManager.loadTexture("ClockAssets/ClockNumbers.png");
 
         float digitHeight = size.y * 0.45f;
         float digitWidth = digitSize.x * digitHeight / digitSize.y;
@@ -49,20 +47,30 @@ public class Clock extends UIObject {
         float digitYOffset = (size.y - digitHeight) / 2.0f;
         float digitXOffset = (size.x / 4) / 2.0f;
 
-        firstDigit = new AnimatedTexture(clockTexture, new Vector2((position.x + digitXOffset), position.y + digitYOffset), new Vector2(digitWidth, digitHeight), Vector2.Zero, digitSize);
-        secondDigit = new AnimatedTexture(clockTexture, new Vector2((position.x + digitXOffset + digitWidth), position.y + digitYOffset), new Vector2(digitWidth, digitHeight), Vector2.Zero, digitSize);
-        thirdDigit = new AnimatedTexture(clockTexture, new Vector2((position.x + (size.x - digitWidth * 2.0f - digitXOffset)), position.y + digitYOffset), new Vector2(digitWidth, digitHeight), Vector2.Zero, digitSize);
-        forthDigit = new AnimatedTexture(clockTexture , new Vector2((position.x + (size.x - digitWidth - digitXOffset)), position.y + digitYOffset), new Vector2(digitWidth, digitHeight), Vector2.Zero, digitSize);
+        firstDigit = new Sprite(clockTexture, 0, 0, (int)digitSize.x, (int)digitSize.y);
+        firstDigit.setPosition((position.x + digitXOffset),  position.y + digitYOffset);
+        firstDigit.setSize(digitWidth, digitHeight);
+        secondDigit = new Sprite(clockTexture,0, 0, (int)digitSize.x, (int)digitSize.y );
+        secondDigit.setPosition((position.x + digitXOffset + digitWidth),  position.y + digitYOffset);
+        secondDigit.setSize(digitWidth, digitHeight);
+        thirdDigit = new Sprite(clockTexture,0, 0, (int)digitSize.x, (int)digitSize.y );
+        thirdDigit.setPosition((position.x + (size.x - digitWidth * 2.0f - digitXOffset)),  position.y + digitYOffset);
+        thirdDigit.setSize(digitWidth, digitHeight);
+        forthDigit = new Sprite(clockTexture,0, 0, (int)digitSize.x, (int)digitSize.y );
+        forthDigit.setPosition((position.x + (size.x - digitWidth - digitXOffset)),position.y + digitYOffset);
+        forthDigit.setSize(digitWidth, digitHeight);
 
         float dotWidth = dotSize.x * digitHeight / dotSize.y;
-        middleDots = new AnimatedTexture(clockTexture , new Vector2((position.x + size.x / 2  - dotWidth / 2), position.y + digitYOffset), new Vector2(dotWidth, digitHeight), new Vector2( digitSize.x * 10,0), dotSize);
-
+        middleDots  = new Sprite(clockTexture,  (int)(digitSize.x * 10), 0, (int)dotSize.x, (int)dotSize.y);
+        middleDots.setPosition((position.x + size.x / 2  - dotWidth / 2), position.y + digitYOffset);
+        middleDots.setSize(dotWidth, digitHeight);
     }
 
     //-------------------------Functions-------------------------//
-    private void ChangeDigit(AnimatedTexture digit, int digitValue) {
-        digit.changeRegion(new Vector2(12 * digitValue, 0), digitSize);
+    private void ChangeDigit(Sprite digit, int digitValue) {
+        digit.setRegion((12 * digitValue), 0, (int)digitSize.x, (int)digitSize.y);
     }
+
 
     public void update(Date time) {
         if(time.getMinute() >= 10) {
@@ -88,21 +96,21 @@ public class Clock extends UIObject {
 
     @Override
     public boolean isVectorInside(Vector2 position) {
-        return backgroundTexture.isVectorInside(position);
+        return backgroundTexture.getBoundingRectangle().contains(position);
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        backgroundTexture.render(batch);
-        firstDigit.render(batch);
-        secondDigit.render(batch);
-        thirdDigit.render(batch);
-        forthDigit.render(batch);
-        middleDots.render(batch);
+        backgroundTexture.draw(batch);
+        firstDigit.draw(batch);
+        secondDigit.draw(batch);
+        thirdDigit.draw(batch);
+        forthDigit.draw(batch);
+        middleDots.draw(batch);
     }
 
     @Override
     public void dispose() {
-        backgroundTexture.dispose();
+        backgroundTexture.getTexture().dispose();
     }
 }
