@@ -3,6 +3,7 @@ package ipca.hrem.com.InputManagers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
+import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.Employee;
 import ipca.hrem.com.ObjectResources.TouchableObject;
@@ -10,18 +11,16 @@ import ipca.hrem.com.ObjectResources.UIResources.Button;
 import ipca.hrem.com.ObjectResources.UIResources.UIObject;
 import ipca.hrem.com.States.GameState;
 import ipca.hrem.com.ObjectResources.GameObject;
+import ipca.hrem.com.States.LiveState;
 
 
 public class GameInput extends InputManager {
     //-------------------------Variables-------------------------//
-    private GameState currentGameState;
-    private final float MAX_ZOOM = 3.0f;
-    private final float MIN_ZOOM = 0.5f;
-    private final float MOVEMENT_SPEED = 0.01f;
+    private LiveState currentState;
 
-    //-------------------------GetSetters-------------------------//
-    public void setCurrentGameState(GameState currentGameState) {
-        this.currentGameState = currentGameState;
+    //-------------------------Constructor-------------------------//
+    public GameInput(LiveState currentState){
+        this.currentState = currentState;
     }
 
     //-------------------------Functions-------------------------//
@@ -33,30 +32,30 @@ public class GameInput extends InputManager {
     @Override
     public boolean tap(float x, float y, int count, int button) {
 
-        if (x > GameState.getCurrentMenuSize()) {            //SE ESTIVER NO VIWEPORT.
+        if (x > GameState.getCurrentMenuSizeScreen()) {            //SE ESTIVER NO VIWEPORT.
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
-            TouchableObject touchableObjectSelectedThisFrame = currentGameState.findTouchedObject(touchedPositionOnWorld);
-            if (currentGameState.getSelectedObject() == null)    //SE NAO HOUVER NADA SELECIONADO.
+            TouchableObject touchableObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
+            if (currentState.getSelectedObject() == null)    //SE NAO HOUVER NADA SELECIONADO.
             {
-                currentGameState.setSelectedObject(touchableObjectSelectedThisFrame);
+                currentState.setSelectedObject(touchableObjectSelectedThisFrame);
                 if (touchableObjectSelectedThisFrame == null) {    //SE NAO HOUVE SELECÇAO AGORA.
                     //select ground floor.
                 }
             } else {                                           //SE HOUVER ALGO SELECIONADO
                 //SE CARREGARES NO CHAO MOVE.
                 if (touchableObjectSelectedThisFrame == null && touchableObjectSelectedThisFrame instanceof GameObject) {
-                    ((GameObject) currentGameState.getSelectedObject()).act(touchedPositionOnWorld);
+                    ((GameObject) currentState.getSelectedObject()).act(touchedPositionOnWorld);
                 }
                 //SE CARREGARES NOUTRO BONECO SELECIONA-O.
                 else if (touchableObjectSelectedThisFrame instanceof Client || touchableObjectSelectedThisFrame instanceof Employee) {
-                    currentGameState.setSelectedObject(touchableObjectSelectedThisFrame);
+                    currentState.setSelectedObject(touchableObjectSelectedThisFrame);
                 } else {
                     //TOCAS NUM ITEM COM UM BONECO SELECTED.
                 }
             }
-        } else {
+        } else {                                                //SE ESTIVER NO MENU.
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentMenuViewport.unproject(new Vector2(x, y)));
-            UIObject touchableObjectSelectedThisFrame = currentGameState.findTouchedObject(touchedPositionOnWorld);
+            UIObject touchableObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
             if (touchableObjectSelectedThisFrame instanceof Button)
                 ((Button) touchableObjectSelectedThisFrame).onClick();
 
@@ -76,8 +75,8 @@ public class GameInput extends InputManager {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-        if (x > GameState.getCurrentMenuSize()) {
-            GameState.gameCamera.translate(deltaX * -MOVEMENT_SPEED * GameState.gameCamera.zoom, deltaY * MOVEMENT_SPEED * GameState.gameCamera.zoom);
+        if (x > GameState.getCurrentMenuSizeScreen()) {
+            MainGame.currentPlayer.gameCamera.translate(deltaX * -MOVEMENT_SPEED * MainGame.currentPlayer.gameCamera.zoom, deltaY * MOVEMENT_SPEED * MainGame.currentPlayer.gameCamera.zoom);
             return true;
         }
         return false;
@@ -90,13 +89,13 @@ public class GameInput extends InputManager {
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
-        GameState.gameCamera.zoom += (initialDistance - distance) * MOVEMENT_SPEED * 0.1 * Gdx.graphics.getDeltaTime();
-        if (GameState.gameCamera.zoom < MIN_ZOOM)
-            GameState.gameCamera.zoom = MIN_ZOOM;
-        else if (GameState.gameCamera.zoom > MAX_ZOOM)
-            GameState.gameCamera.zoom = MAX_ZOOM;
+        MainGame.currentPlayer.gameCamera.zoom += (initialDistance - distance) * MOVEMENT_SPEED * 0.1 * Gdx.graphics.getDeltaTime();
+        if (MainGame.currentPlayer.gameCamera.zoom < MIN_ZOOM)
+            MainGame.currentPlayer.gameCamera.zoom = MIN_ZOOM;
+        else if (MainGame.currentPlayer.gameCamera.zoom > MAX_ZOOM)
+            MainGame.currentPlayer.gameCamera.zoom = MAX_ZOOM;
 
-        return false;
+        return true;
     }
 
     @Override

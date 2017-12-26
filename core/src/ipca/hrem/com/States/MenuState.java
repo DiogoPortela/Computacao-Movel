@@ -30,10 +30,10 @@ public class MenuState extends State {
         currentViewport = new GameViewport(Point.Zero, new Vector2(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight()),GameState.gameScaleWidth, GameState.gameScaleHeight, currentCamera);
         currentViewport.apply();
         currentCamera.position.set(currentCamera.viewportWidth / 2.0f, currentCamera.viewportHeight / 2f, 0);
-        playBtn = new Button("Tile002.png", new Vector2( getCurrentViewport().getWorldWidth() / 2.0f - 0.5f,getCurrentViewport().getWorldHeight() / 2.0f - 0.5f), new Vector2(1, 1), ""){
+        playBtn = new Button( new Vector2( getCurrentViewport().getWorldWidth() / 2.0f - 0.5f,getCurrentViewport().getWorldHeight() / 2.0f - 0.5f), new Vector2(2, 1), new Vector2(0, 32 * 3), new Vector2(64, 32)){
             @Override
             public void onClick() {
-                MainGame.setCurrentState(new LiveState(150));
+                MainGame.setCurrentState(new LiveState(2.5f));
             }
         };
         addUIObject(playBtn);

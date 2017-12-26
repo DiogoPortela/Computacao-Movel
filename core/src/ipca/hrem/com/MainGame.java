@@ -2,16 +2,20 @@ package ipca.hrem.com;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import java.awt.Menu;
-
+import ipca.hrem.com.InputManagers.BuildInput;
 import ipca.hrem.com.InputManagers.GameInput;
 import ipca.hrem.com.InputManagers.InputManager;
 import ipca.hrem.com.InputManagers.MenuInput;
+import ipca.hrem.com.ResourceManagers.FontManager;
+import ipca.hrem.com.States.BuildState;
 import ipca.hrem.com.States.GameState;
+import ipca.hrem.com.States.LiveState;
 import ipca.hrem.com.States.State;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 import ipca.hrem.com.States.MenuState;
@@ -27,6 +31,8 @@ public class MainGame extends ApplicationAdapter {
     private static SpriteBatch batch;
     private static State currentState;
     private static InputManager inputManager;
+    public static Player currentPlayer;
+    public static Label.LabelStyle testLabel;
 
     //-------------------------GetSetters-------------------------//
     public static State getCurrentState() {
@@ -35,13 +41,14 @@ public class MainGame extends ApplicationAdapter {
 
     public static void setCurrentState(State newState) {
         currentState = newState;
-        if(newState instanceof GameState) {
-            setInputManager(new GameInput());
-            ((GameInput)inputManager).setCurrentGameState((GameState) currentState);
+        if(newState instanceof LiveState) {
+            setInputManager(new GameInput((LiveState) currentState));
+        }
+        else if(newState instanceof BuildState) {
+            setInputManager(new BuildInput((BuildState) currentState));
         }
         else if(newState instanceof MenuState){
-            setInputManager(new MenuInput());
-            ((MenuInput)inputManager).setCurrentState((MenuState) currentState);
+            setInputManager(new MenuInput((MenuState) currentState));
         }
     }
 
@@ -59,6 +66,9 @@ public class MainGame extends ApplicationAdapter {
     @Override
     public void create() {
         TextureManager.Start();
+        FontManager.Start();
+        currentPlayer = new Player();
+        testLabel = FontManager.loadFont("ARIALUNI.TTF", 10, Color.WHITE);
         batch = new SpriteBatch();
 
         setCurrentState(new MenuState());
@@ -67,7 +77,6 @@ public class MainGame extends ApplicationAdapter {
     @Override
     public void render() {
         currentState.update(Gdx.graphics.getDeltaTime());
-
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         currentState.render(batch);
