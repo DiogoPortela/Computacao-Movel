@@ -61,6 +61,7 @@ public class MainGame extends ApplicationAdapter {
         Gdx.input.setInputProcessor(new GestureDetector(inputManager));
 
     }
+
     //-------------------------Functions-------------------------//
 
     @Override
@@ -77,7 +78,7 @@ public class MainGame extends ApplicationAdapter {
     @Override
     public void render() {
         currentState.update(Gdx.graphics.getDeltaTime());
-        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         currentState.render(batch);
     }

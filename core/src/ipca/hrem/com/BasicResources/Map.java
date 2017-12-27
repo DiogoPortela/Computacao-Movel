@@ -1,16 +1,43 @@
 package ipca.hrem.com.BasicResources;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
-public class Map {
+import ipca.hrem.com.ObjectResources.GridCell;
 
+public class Map {
     public static final float CELL_SCALE = 1.0f;
 
     //-------------------------Variables-------------------------//
-    public static Grid fullMap;                 //To use only one instance of cell this grid must contain all cells.
-    public static ArrayList<Grid> gridList;     //This will hold all grids that there are on a map. Should not be drawn.
+    private Grid fullMap;                 //To use only one instance of cell this grid must contain all cells.
+    private ArrayList<Grid> gridList;     //This will hold all grids that there are on a map. Should not be drawn.
+    //-------------------------GetSetters-------------------------//
+    public Grid getFullMap() {
+        return fullMap;
+    }
+
+    public void setFullMap(Grid fullMap) {
+        this.fullMap = fullMap;
+    }
+
+    public ArrayList<Grid> getGridList() {
+        return gridList;
+    }
+
+    public void setGridList(ArrayList<Grid> gridList) {
+        this.gridList = gridList;
+    }
+
+    public void setTile(Point tileCoordinates, GridCell.CellType cellType){
+        fullMap.cells[tileCoordinates.X][tileCoordinates.Y].setCellType(cellType);
+    }
+
+    public GridCell getTile(Point position){
+        return fullMap.cells[position.X][position.Y];
+    }
 
     //-------------------------Constructor-------------------------//
     public Map(int Width, int Height) {

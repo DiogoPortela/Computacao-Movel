@@ -1,31 +1,65 @@
 package ipca.hrem.com.InputManagers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
+import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.MainGame;
+import ipca.hrem.com.ObjectResources.GridCell;
+import ipca.hrem.com.ObjectResources.UIResources.Button;
+import ipca.hrem.com.ObjectResources.UIResources.UIObject;
 import ipca.hrem.com.States.BuildState;
+import ipca.hrem.com.States.GameState;
 
 public class BuildInput extends InputManager {
     //-------------------------Variables-------------------------//
     BuildState currentState;
+    GridCell.CellType currentSelectedCellType;
+    boolean isBuildingWalls;
+    Vector2 firstPosition;
 
     //-------------------------GetSetters-------------------------//
+
+    public void setCurrentSelectedCellType(GridCell.CellType currentSelectedCellType) {
+        this.currentSelectedCellType = currentSelectedCellType;
+    }
+
+    public void setBuildingWalls(boolean buildingWalls) {
+        isBuildingWalls = buildingWalls;
+    }
 
     //-------------------------Constructor-------------------------//
     public BuildInput(BuildState state){
         currentState = state;
+        isBuildingWalls = false;
+        firstPosition = null;
     }
     //-------------------------Functions-------------------------//
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
+        if(isBuildingWalls && x > GameState.getCurrentMenuSizeScreen()){
+            firstPosition = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
+        }
         return false;
     }
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        return false;
+        if (x > GameState.getCurrentMenuSizeScreen()) {            //SE ESTIVER NO VIWEPORT.
+            Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
+            if(currentState.getSelectedObject() != null){
+                MainGame.currentPlayer.currentMap.setTile(Point.fromVector2(touchedPositionOnWorld), currentSelectedCellType);
+            }
+
+        } else {                                                //SE ESTIVER NO MENU.
+            Vector2 touchedPositionOnWorld = new Vector2(GameState.currentMenuViewport.unproject(new Vector2(x, y)));
+            UIObject touchableObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
+            if (touchableObjectSelectedThisFrame instanceof Button)
+                ((Button)touchableObjectSelectedThisFrame).onClick();
+        }
+        return true;
     }
 
     @Override
@@ -45,6 +79,9 @@ public class BuildInput extends InputManager {
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
+        if(isBuildingWalls){
+            Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
+        }
         return false;
     }
 

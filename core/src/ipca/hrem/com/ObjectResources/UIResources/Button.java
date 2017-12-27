@@ -34,7 +34,13 @@ public abstract class Button extends UIObject {
         this.sprite.setSize(size.x, size.y);
         this.text = "";
     }
-
+    public Button(String textureName, Vector2 position, Vector2 size, Vector2 regionPosition, Vector2 regionSize) {
+        super();
+        this.sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(textureName), (int) regionPosition.x, (int) regionPosition.y, (int) regionSize.x, (int) regionSize.y));
+        this.sprite.setPosition(position.x, position.y);
+        this.sprite.setSize(size.x, size.y);
+        this.text = "";
+    }
     public Button(Vector2 position, Vector2 size, Vector2 regionPosition, Vector2 regionSize) {
         super();
         this.sprite = new Sprite(new TextureRegion(TextureManager.loadTexture("buttonsSheet.png"), (int) regionPosition.x, (int) regionPosition.y, (int) regionSize.x, (int) regionSize.y));
