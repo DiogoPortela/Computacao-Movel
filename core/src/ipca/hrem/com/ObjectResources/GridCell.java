@@ -44,7 +44,7 @@ public class GridCell extends GameObject {
                 setIsInterior(false);
                 break;
             case dirt:
-                sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture), 0, 128 * 32, 32, 32));
+                sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture), 0, 128, 32, 32));
                 break;
         }
         sprite.setPosition(position.x, position.y);
