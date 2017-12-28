@@ -25,6 +25,11 @@ public class Point {
         this.Y = (int) vector.y;
     }
 
+    public Point(){
+        X = 0;
+        Y = 0;
+    }
+
     //-------------------------Functions-------------------------//
     public static Vector2 toVector2(Point p) {
         return new Vector2(p.X, p.Y);

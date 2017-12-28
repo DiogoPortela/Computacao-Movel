@@ -1,9 +1,9 @@
 package ipca.hrem.com.InputManagers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
+import ipca.hrem.com.BasicResources.Grid;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.GridCell;
@@ -50,7 +50,7 @@ public class BuildInput extends InputManager {
         if (x > GameState.getCurrentMenuSizeScreen()) {            //SE ESTIVER NO VIWEPORT.
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
             if(currentState.getSelectedObject() != null){
-                MainGame.currentPlayer.currentMap.setTile(Point.fromVector2(touchedPositionOnWorld), currentSelectedCellType);
+                MainGame.currentPlayer.currentMap.setGridCell(Point.fromVector2(touchedPositionOnWorld), currentSelectedCellType);
             }
 
         } else {                                                //SE ESTIVER NO MENU.
@@ -81,6 +81,8 @@ public class BuildInput extends InputManager {
     public boolean panStop(float x, float y, int pointer, int button) {
         if(isBuildingWalls){
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
+            Grid newGrid = new Grid(Grid.GridType.exterior, firstPosition, touchedPositionOnWorld);
+            newGrid.setCellTypeForAll(GridCell.CellType.dirt);
         }
         return false;
     }
