@@ -9,18 +9,17 @@ package ipca.hrem.com.BasicResources;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Collections;
 
 public class Pathfinding {
     // Find a path between two points.
     boolean ignorePrices = false;
-    public static List<Point> FindPath(GraphGrid graphGrid, Point startPos, Point targetPos, boolean ignorePrices ){
+    public static ArrayList<Point> FindPath(GraphGrid graphGrid, Point startPos, Point targetPos, boolean ignorePrices ){
         // Find path
-        List<Node> nodes_path = ImpFindPath(graphGrid, startPos, targetPos, ignorePrices);
+        ArrayList<Node> nodes_path = ImpFindPath(graphGrid, startPos, targetPos, ignorePrices);
 
         // Convert to a list of points and return
-        List<Point> ret = new List<Point>();
+        ArrayList<Point> ret = new ArrayList<Point>();
         if (nodes_path != null)
         {
             for (Node node : nodes_path ){
@@ -36,13 +35,13 @@ public class Pathfinding {
     // startPos - Starting position
     // targetPos - Ending position
     // ignorePrices - If true, will ignore tile price (cost to walk on)
-    private static List<Node> ImpFindPath(GraphGrid graphGrid, Point startPos, Point targetPos, boolean ignorePrices)
+    private static ArrayList<Node> ImpFindPath(GraphGrid graphGrid, Point startPos, Point targetPos, boolean ignorePrices)
     {
         Node startNode = graphGrid.nodes[startPos.X][startPos.Y];
         Node targetNode = graphGrid.nodes[targetPos.X][targetPos.Y];
 
         // ArrayList<Node> openSet = new ArrayList<Node>(); Same shit as below?
-        List<Node> openSet = new List<Node>();
+        ArrayList<Node> openSet = new ArrayList<Node>();
         HashSet<Node> closedSet = new HashSet<Node>();
         openSet.add(startNode);
 
@@ -86,9 +85,9 @@ public class Pathfinding {
         // graphgrid - Graphgrid to search
         // startNode - Starting position
         // endNode - Ending position
-        private static List<Node> RetracePath(GraphGrid graphGrid, Node startNode, Node endNode)
+        private static ArrayList<Node> RetracePath(GraphGrid graphGrid, Node startNode, Node endNode)
         {
-            List<Node> path = new List<Node>();
+            ArrayList<Node> path = new ArrayList<Node>();
             Node currentNode = endNode;
 
             while (currentNode != startNode)

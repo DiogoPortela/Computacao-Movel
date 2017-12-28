@@ -4,6 +4,7 @@ package ipca.hrem.com.BasicResources;
 // A 2D grid of nodes we pathfind
 // The grid marks which tiles are walkable and which are not
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +45,7 @@ public class GraphGrid {
 
         for (int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){
-                nodes[x][y] = new Node(walkable_tiles[x, y] ? 1 : 0, x, y);
+                nodes[x][y] = new Node(walkable_tiles[x][y] ? true : false, x, y);
             }
         }
     }
@@ -52,7 +53,7 @@ public class GraphGrid {
     // Get all the neighbors of a given tile in the grid
     // node - Node to get neighbors for
     public List<Node> GetNeighbors(Node node){
-        List<Node> neighbors = new List<Node>();
+        List<Node> neighbors = new ArrayList<Node>();
 
         for (int x = -1; x <= 1; x++){
             for (int y = -1; y <= 1; y++){
