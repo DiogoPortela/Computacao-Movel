@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import ipca.hrem.com.BasicResources.Date;
 import ipca.hrem.com.BasicResources.Map;
+import ipca.hrem.com.ObjectResources.Finance;
 import ipca.hrem.com.ObjectResources.GameObject;
 
 public class Player {
@@ -14,6 +15,8 @@ public class Player {
     public Map currentMap;
     public ArrayList<GameObject> allGameObjects;
     public Date date;
+    public Finance income;
+
     //-------------------------GetSetters-------------------------//
 
     //-------------------------Constructor-------------------------//
