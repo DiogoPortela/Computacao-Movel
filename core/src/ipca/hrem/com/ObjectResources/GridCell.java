@@ -7,21 +7,20 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
 
+import ipca.hrem.com.BasicResources.Grid;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
 public class GridCell extends GameObject {
 
     public enum CellType {                      //ENUMERATOR FOR ALL CELL TYPES: THIS IS SUPPOSED TO GENERATE THE SPRITE AND STUFF.
-        empty, test, grass, dirt, concrete, woodenFloor     //....
+        empty, test, grass, dirt, wall, concrete, woodenFloor     //....
     }
 
     //-------------------------Variables-------------------------//
     public static final String tileTexture = "TileTexture.png";
-    private Vector2 position;
-    private float scale;
-    private Sprite sprite;
     private CellType cellType;
     private boolean isInterior;
+    private Grid parentGrid;
     //Some statistics here
 
     //-------------------------GetSetters-------------------------//
@@ -44,7 +43,10 @@ public class GridCell extends GameObject {
                 setIsInterior(false);
                 break;
             case dirt:
-                sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture), 0, 128 * 32, 32, 32));
+                sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture), 0, 128, 32, 32));
+                break;
+            case wall:
+                sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture)));
                 break;
         }
         sprite.setPosition(position.x, position.y);
@@ -59,11 +61,20 @@ public class GridCell extends GameObject {
         isInterior = interior;
     }
 
+    public Grid getParentGrid() {
+        return parentGrid;
+    }
+
+    public void setParentGrid(Grid parentGrid) {
+        this.parentGrid = parentGrid;
+    }
+
     //-------------------------Constructor-------------------------//
     public GridCell(CellType cellType, Vector2 position, float scale) {
         this.position = position;
         this.scale = scale;
         setCellType(cellType);
+        parentGrid = null;
     }
     //-------------------------Functions-------------------------//
 

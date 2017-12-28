@@ -34,7 +34,7 @@ public class BuildState extends GameState {
         buildBtn = new Button(new Vector2( 2.0f, gameScaleHeight - 1.1f), new Vector2(1, 1), new Vector2(160, 0), new Vector2(32, 32)) {
             @Override
             public void onClick() {
-                ((BuildInput) MainGame.getInputManager()).setBuildingWalls(true);
+                ((BuildInput) MainGame.getInputManager()).toggleBuildWalls();
             }
         };
         addUIObject(buildBtn);
