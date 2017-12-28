@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
 
+import ipca.hrem.com.BasicResources.Grid;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
 public class GridCell extends GameObject {
@@ -17,11 +18,9 @@ public class GridCell extends GameObject {
 
     //-------------------------Variables-------------------------//
     public static final String tileTexture = "TileTexture.png";
-    private Vector2 position;
-    private float scale;
-    private Sprite sprite;
     private CellType cellType;
     private boolean isInterior;
+    private Grid parentGrid;
     //Some statistics here
 
     //-------------------------GetSetters-------------------------//
@@ -59,11 +58,20 @@ public class GridCell extends GameObject {
         isInterior = interior;
     }
 
+    public Grid getParentGrid() {
+        return parentGrid;
+    }
+
+    public void setParentGrid(Grid parentGrid) {
+        this.parentGrid = parentGrid;
+    }
+
     //-------------------------Constructor-------------------------//
     public GridCell(CellType cellType, Vector2 position, float scale) {
         this.position = position;
         this.scale = scale;
         setCellType(cellType);
+        parentGrid = null;
     }
     //-------------------------Functions-------------------------//
 

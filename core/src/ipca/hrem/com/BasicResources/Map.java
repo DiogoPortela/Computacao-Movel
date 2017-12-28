@@ -30,12 +30,12 @@ public class Map {
         this.gridList = gridList;
     }
 
-    public void setTile(Point tileCoordinates, GridCell.CellType cellType) {
+    public void setGridCell(Point tileCoordinates, GridCell.CellType cellType) {
         fullMap.cells[tileCoordinates.X][tileCoordinates.Y].setCellType(cellType);
     }
 
-    public GridCell getTile(Point position) {
-        if (position.X < fullMap.getGridWidth() && position.X > 0 && position.Y < fullMap.getGridHeight() && position.Y > 0)
+    public GridCell getGridCell(Point position) {
+        if (position.X < fullMap.getGridWidth() && position.X >= 0 && position.Y < fullMap.getGridHeight() && position.Y >= 0)
             return fullMap.cells[position.X][position.Y];
         return null;
     }

@@ -1,7 +1,6 @@
 package ipca.hrem.com.InputManagers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 import ipca.hrem.com.BasicResources.Grid;
@@ -51,7 +50,7 @@ public class BuildInput extends InputManager {
         if (x > GameState.getCurrentMenuSizeScreen()) {            //SE ESTIVER NO VIWEPORT.
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
             if(currentState.getSelectedObject() != null){
-                MainGame.currentPlayer.currentMap.setTile(Point.fromVector2(touchedPositionOnWorld), currentSelectedCellType);
+                MainGame.currentPlayer.currentMap.setGridCell(Point.fromVector2(touchedPositionOnWorld), currentSelectedCellType);
             }
 
         } else {                                                //SE ESTIVER NO MENU.
