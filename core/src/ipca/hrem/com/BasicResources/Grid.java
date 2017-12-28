@@ -110,7 +110,7 @@ public class Grid {
             }
         }
 
-        findWalls(coordinates, new Point(coordinates.X + gridWidth, coordinates.Y + gridHeight));
+        calculateExternalWallsOnArea(coordinates, new Point(coordinates.X + gridWidth, coordinates.Y + gridHeight));
 
         ArrayList<Grid> otherGrids = getIntersectingGrids();
         if (otherGrids.isEmpty()) {
@@ -126,10 +126,59 @@ public class Grid {
         if (gridType == GridType.interior) {
             for (GridCell[] row : cells) {
                 for (GridCell cell : row) {
-                    cell.setIsInterior(true);
+                    if (cell != null && !cell.getIsInterior()) {
+                        cell.setIsInterior(true);
+                        cell.setCellType(GridCell.CellType.justBuilt);
+                    }
                 }
             }
         }
+    }
+
+    public Grid(int array[][], int arrayWidth, int arrayHeight, Point position) {
+        this.gridType = GridType.interior;
+        this.cells = new GridCell[arrayWidth][arrayHeight];
+        this.gridWidth = arrayWidth;
+        this.gridHeight = arrayHeight;
+        this.coordinates = position;
+
+        for (int i = 0; i < arrayWidth; i++) {
+            for (int j = 0; j < arrayHeight; j++) {
+                cells[i][j] = MainGame.currentPlayer.currentMap.getGridCell(new Point(position.X + i, position.Y + j));
+                cells[i][j].setParentGrid(this);
+                cells[i][j].setIsInterior(true);
+            }
+        }
+
+        wallList = new ArrayList<GridCell>();
+        cornerList = new ArrayList<GridCell>();
+
+        for (int i = 0; i < arrayWidth; i++) {
+            for (int j = 0, jj = arrayHeight - 1; j < arrayHeight; j++, jj--) {
+                switch (array[jj][i]) {
+                    case 0:
+                        cells[i][j].clearParentGrid();
+                        cells[i][j].setIsInterior(false);
+                        cells[i][j] = null;
+                        break;
+                    case 1:
+                        cells[i][j].setCellType(GridCell.CellType.wall);
+                        wallList.add(cells[i][j]);
+                        break;
+                    case 2:
+                        cells[i][j].setCellType(GridCell.CellType.woodenFloor);
+                        break;
+                    case 3:
+                        cells[i][j].setCellType(GridCell.CellType.kitchenFloor);
+                        break;
+                    case 4:
+                        cells[i][j].setCellType(GridCell.CellType.bathroomFloor);
+                        break;
+                }
+            }
+        }
+
+        //findWalls(position, new Point(position.X + arrayWidth, position.Y + arrayHeight));
     }
 
     //-------------------------Functions-------------------------//
@@ -141,12 +190,9 @@ public class Grid {
         }
     }
 
-    public void findWalls(Point begining, Point end) {
-        //wallList = new ArrayList<GridCell>();
-        //cornerList = new ArrayList<GridCell>();
-
-        for (int i = begining.X - coordinates.X; i < end.X - coordinates.X; i++) {
-            for (int j = begining.Y - coordinates.Y; j < end.Y - coordinates.Y; j++) {
+    public void calculateExternalWallsOnArea(Point areaMin, Point areaMax) {
+        for (int i = areaMin.X - coordinates.X; i < areaMax.X - coordinates.X; i++) {
+            for (int j = areaMin.Y - coordinates.Y; j < areaMax.Y - coordinates.Y; j++) {
                 if (cells[i][j] != null) {
                     Point coordinates = Point.fromVector2(cells[i][j].getPosition());
                     int counter = 0;
@@ -170,10 +216,16 @@ public class Grid {
                         if (wallList.contains(cells[i][j]))
                             wallList.remove(cells[i][j]);
                     } else {
-                        if (wallList.contains(cells[i][j]))
+                        if (wallList.contains(cells[i][j])) {
+                            if (cells[i][j].getCellType() == GridCell.CellType.wall)
+                                cells[i][j].setCellType(GridCell.CellType.justBuilt);
                             wallList.remove(cells[i][j]);
-                        if (cornerList.contains(cells[i][j]))
+                        }
+                        if (cornerList.contains(cells[i][j])) {
+                            if (cells[i][j].getCellType() == GridCell.CellType.wall)
+                                cells[i][j].setCellType(GridCell.CellType.justBuilt);
                             cornerList.remove(cells[i][j]);
+                        }
 
                     }
                 }
@@ -247,9 +299,8 @@ public class Grid {
                 if (!cornerList.contains(cell))
                     cornerList.add(cell);
             }
-            findWalls(minIntersect, maxIntersect);
+            calculateExternalWallsOnArea(minIntersect, maxIntersect);
         }
-
 
         for (GridCell[] row : cells) {
             for (GridCell cell : row) {
