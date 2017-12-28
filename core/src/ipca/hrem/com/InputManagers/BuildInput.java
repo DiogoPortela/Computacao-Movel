@@ -29,6 +29,10 @@ public class BuildInput extends InputManager {
         isBuildingWalls = buildingWalls;
     }
 
+    public void toggleBuildWalls(){
+        isBuildingWalls = !isBuildingWalls;
+    }
+
     //-------------------------Constructor-------------------------//
     public BuildInput(BuildState state){
         currentState = state;
@@ -74,6 +78,12 @@ public class BuildInput extends InputManager {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
+        if(!isBuildingWalls){
+            if (x > GameState.getCurrentMenuSizeScreen()) {
+                MainGame.currentPlayer.gameCamera.translate(deltaX * -MOVEMENT_SPEED * MainGame.currentPlayer.gameCamera.zoom, deltaY * MOVEMENT_SPEED * MainGame.currentPlayer.gameCamera.zoom);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -83,19 +93,24 @@ public class BuildInput extends InputManager {
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
             Grid newGrid = new Grid(Grid.GridType.exterior, firstPosition, touchedPositionOnWorld);
             newGrid.setCellTypeForAll(GridCell.CellType.dirt);
+            newGrid.generateWalls();
+            return true;
+        } else{
+
         }
         return false;
     }
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
-        MainGame.currentPlayer.gameCamera.zoom += (initialDistance - distance) * MOVEMENT_SPEED * 0.1 * Gdx.graphics.getDeltaTime();
-        if (MainGame.currentPlayer.gameCamera.zoom < MIN_ZOOM)
-            MainGame.currentPlayer.gameCamera.zoom = MIN_ZOOM;
-        else if (MainGame.currentPlayer.gameCamera.zoom > MAX_ZOOM)
-            MainGame.currentPlayer.gameCamera.zoom = MAX_ZOOM;
-
-        return true;
+        if(!isBuildingWalls){
+            MainGame.currentPlayer.gameCamera.zoom += (initialDistance - distance) * MOVEMENT_SPEED * 0.1 * Gdx.graphics.getDeltaTime();
+            if (MainGame.currentPlayer.gameCamera.zoom < MIN_ZOOM)
+                MainGame.currentPlayer.gameCamera.zoom = MIN_ZOOM;
+            else if (MainGame.currentPlayer.gameCamera.zoom > MAX_ZOOM)
+                MainGame.currentPlayer.gameCamera.zoom = MAX_ZOOM;
+        }
+        return false;
     }
 
     @Override

@@ -100,32 +100,17 @@ public class Grid {
         gridWidth = Math.abs(startPoint.X - endPoint.X) + 1;
         gridHeight = Math.abs(startPoint.Y - endPoint.Y) + 1;
 
-
         cells = new GridCell[gridWidth][gridHeight];
         wallList = new ArrayList<GridCell>();
         cornerList = new ArrayList<GridCell>();
+
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 cells[i][j] = MainGame.currentPlayer.currentMap.getGridCell(new Point(startPoint.X + i * xDirection, startPoint.Y + j * yDirection));
-                if(i == 0){
-                    wallList.add(MainGame.currentPlayer.currentMap.getGridCell(new Point(startPoint.X - 1 * xDirection, startPoint.Y + j * yDirection)));
-                    if(j == 0)
-                        cornerList.add(MainGame.currentPlayer.currentMap.getGridCell(new Point(startPoint.X - 1 * xDirection, startPoint.Y - 1 * yDirection)));
-                    else if(j == gridHeight - 1)
-                        cornerList.add(MainGame.currentPlayer.currentMap.getGridCell(new Point(startPoint.X  - 1 * xDirection, startPoint.Y + gridHeight * yDirection)));
-                } else if (i == gridWidth - 1){
-                    wallList.add(MainGame.currentPlayer.currentMap.getGridCell(new Point(startPoint.X + gridWidth * xDirection, startPoint.Y + j * yDirection)));
-                    if(j == 0)
-                        cornerList.add(MainGame.currentPlayer.currentMap.getGridCell(new Point(startPoint.X + gridWidth * xDirection, startPoint.Y - 1 * yDirection)));
-                    else if(j == gridHeight - 1)
-                        cornerList.add(MainGame.currentPlayer.currentMap.getGridCell(new Point(startPoint.X + gridWidth * xDirection, startPoint.Y + gridHeight * yDirection)));
-                }
-                if(j == 0){
-                    wallList.add(MainGame.currentPlayer.currentMap.getGridCell(new Point(startPoint.X + i * xDirection, startPoint.Y - 1 * yDirection)));
-                } else if(j == gridHeight - 1)
-                    wallList.add(MainGame.currentPlayer.currentMap.getGridCell(new Point(startPoint.X + i * xDirection, startPoint.Y + gridHeight * yDirection)));
             }
         }
+
+        findWalls(coordinates, new Point(coordinates.X + gridWidth, coordinates.Y + gridHeight));
 
         ArrayList<Grid> otherGrids = getIntersectingGrids();
         if (otherGrids.isEmpty()) {
@@ -156,37 +141,61 @@ public class Grid {
         }
     }
 
-    public void findWalls() {
-        wallList = new ArrayList<GridCell>();
-        cornerList = new ArrayList<GridCell>();
+    public void findWalls(Point begining, Point end) {
+        //wallList = new ArrayList<GridCell>();
+        //cornerList = new ArrayList<GridCell>();
 
-        for(int i = 0; i < gridWidth; i++){
-            for(int j = 0; j < gridHeight; j++){
-                if(cells[i][j] != null){
+        for (int i = begining.X - coordinates.X; i < end.X - coordinates.X; i++) {
+            for (int j = begining.Y - coordinates.Y; j < end.Y - coordinates.Y; j++) {
+                if (cells[i][j] != null) {
                     Point coordinates = Point.fromVector2(cells[i][j].getPosition());
                     int counter = 0;
-                    for(int ii = -1; ii < 2; ii++){
-                        for(int jj = -1; jj <2; jj++){
-                            if(jj == 0 && ii == 0)
+                    for (int ii = -1; ii < 2; ii++) {
+                        for (int jj = -1; jj < 2; jj++) {
+                            if (jj == 0 && ii == 0)
                                 continue;
-                            else if(!containsGridCell(MainGame.currentPlayer.currentMap.getGridCell(new Point(coordinates.X + ii, coordinates.Y + jj))))
+                            else if (!containsGridCell(MainGame.currentPlayer.currentMap.getGridCell(new Point(this.coordinates.X + i + ii, this.coordinates.Y + j + jj))))
                                 counter++;
                         }
                     }
 
-                    if(counter == 3 || counter == 2)
-                        wallList.add(cells[i][j]);
-                    else if(counter == 1 || counter == 4 || counter == 5)
-                        cornerList.add(cells[i][j]);
+                    if (counter == 3 || counter == 2) {
+                        if (!wallList.contains(cells[i][j]))
+                            wallList.add(cells[i][j]);
+                        if (cornerList.contains(cells[i][j]))
+                            cornerList.remove(cells[i][j]);
+                    } else if (counter == 1 || counter == 4 || counter == 5) {
+                        if (!cornerList.contains(cells[i][j]))
+                            cornerList.add(cells[i][j]);
+                        if (wallList.contains(cells[i][j]))
+                            wallList.remove(cells[i][j]);
+                    } else {
+                        if (wallList.contains(cells[i][j]))
+                            wallList.remove(cells[i][j]);
+                        if (cornerList.contains(cells[i][j]))
+                            cornerList.remove(cells[i][j]);
+
+                    }
                 }
             }
         }
     }
 
-    public boolean containsGridCell(GridCell cell){
-        for (GridCell[] row: cells) {
-            for(GridCell c: row){
-                if(c == cell)
+    public void generateWalls() {
+        for (GridCell wall : wallList) {
+            if (MainGame.currentPlayer.currentMap.getGridCell(Point.fromVector2(wall.getPosition())).getCellType() != GridCell.CellType.wall)
+                wall.setCellType(GridCell.CellType.wall);
+        }
+        for (GridCell corner : cornerList) {
+            if (MainGame.currentPlayer.currentMap.getGridCell(Point.fromVector2(corner.getPosition())).getCellType() != GridCell.CellType.wall)
+                corner.setCellType(GridCell.CellType.wall);
+        }
+    }
+
+    public boolean containsGridCell(GridCell cell) {
+        for (GridCell[] row : cells) {
+            for (GridCell c : row) {
+                if (c == cell)
                     return true;
             }
         }
@@ -194,6 +203,9 @@ public class Grid {
     }
 
     private void updateCells(ArrayList<Grid> collidingGrids) {
+        Point minIntersect = this.coordinates;
+        Point maxIntersect = new Point(this.coordinates.X + gridWidth, this.coordinates.Y + gridHeight);
+
         for (Grid grid : collidingGrids) {
             int thisGridMaxX = gridWidth + coordinates.X;
             int thisGridMaxY = gridHeight + coordinates.Y;
@@ -227,9 +239,17 @@ public class Grid {
                 }
             }
             this.cells = newArray;
+            for (GridCell cell : grid.wallList) {
+                if (!wallList.contains(cell))
+                    wallList.add(cell);
+            }
+            for (GridCell cell : grid.cornerList) {
+                if (!cornerList.contains(cell))
+                    cornerList.add(cell);
+            }
+            findWalls(minIntersect, maxIntersect);
         }
 
-        findWalls();
 
         for (GridCell[] row : cells) {
             for (GridCell cell : row) {
@@ -248,7 +268,7 @@ public class Grid {
                     result.add(cell.getParentGrid());
             }
         }
-        for(GridCell cell : wallList) {
+        for (GridCell cell : wallList) {
             if (cell.getParentGrid() != null && !result.contains(cell.getParentGrid()))
                 result.add(cell.getParentGrid());
         }

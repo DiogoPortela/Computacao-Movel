@@ -13,7 +13,7 @@ import ipca.hrem.com.ResourceManagers.TextureManager;
 public class GridCell extends GameObject {
 
     public enum CellType {                      //ENUMERATOR FOR ALL CELL TYPES: THIS IS SUPPOSED TO GENERATE THE SPRITE AND STUFF.
-        empty, test, grass, dirt, concrete, woodenFloor     //....
+        empty, test, grass, dirt, wall, concrete, woodenFloor     //....
     }
 
     //-------------------------Variables-------------------------//
@@ -44,6 +44,9 @@ public class GridCell extends GameObject {
                 break;
             case dirt:
                 sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture), 0, 128, 32, 32));
+                break;
+            case wall:
+                sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture)));
                 break;
         }
         sprite.setPosition(position.x, position.y);
