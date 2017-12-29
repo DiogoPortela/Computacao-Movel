@@ -46,7 +46,7 @@ public class GridCell extends GameObject {
                 sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture), 0, 128, 32, 32));
                 break;
             case justBuilt:
-                sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture), 0, 128, 32, 32));
+                sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture), 32, 128, 32, 32));
                 break;
             case wallInterior:
                 sprite = new Sprite(new TextureRegion(TextureManager.loadTexture(tileTexture), 0, 0, 32,32));
