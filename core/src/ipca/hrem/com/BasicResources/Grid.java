@@ -51,6 +51,37 @@ public class Grid {
         }
     }
 
+    private void addToCornerList(GridCell cell) {
+        if (!cornerList.contains(cell))
+            cornerList.add(cell);
+        if (wallList.contains(cell))
+            wallList.remove(cell);
+    }
+
+    private void addToWallList(GridCell cell) {
+        if (!wallList.contains(cell))
+            wallList.add(cell);
+        if (cornerList.contains(cell))
+            cornerList.remove(cell);
+    }
+
+    private void clearWall(GridCell cell) {
+        if (wallList.contains(cell)) {
+            if (cell.getCellType() == GridCell.CellType.wallInterior) {
+                cell.setCellType(GridCell.CellType.justBuilt);
+                MainGame.currentPlayer.currentMap.getGridCell(new Point((int) cell.getPosition().x, (int) cell.getPosition().y - 1)).setCellType(GridCell.CellType.justBuilt);
+            }
+            wallList.remove(cell);
+        }
+        if (cornerList.contains(cell)) {
+            if (cell.getCellType() == GridCell.CellType.wallInterior) {
+                cell.setCellType(GridCell.CellType.justBuilt);
+                MainGame.currentPlayer.currentMap.getGridCell(new Point((int) cell.getPosition().x, (int) cell.getPosition().y - 1)).setCellType(GridCell.CellType.justBuilt);
+            }
+            cornerList.remove(cell);
+        }
+    }
+
     //-------------------------Constructor-------------------------//
     public Grid(GridType gridType, int gridWidth, int gridHeight, Point start) {
         this.gridType = gridType;
@@ -204,6 +235,54 @@ public class Grid {
         }
     }
 
+    {
+        /*private void calculateCorners() {
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = 0; j < gridHeight; j++) {
+                if (cells[i][j] != null && cells[i][j].getCellType() == GridCell.CellType.wallInterior) {
+                    boolean array[][] = checkSurroundings(i, j, GridCell.CellType.wallInterior);
+                    if (array[1][2] && array[1][0]) {
+                        if (array[0][1] && array[2][1]) {
+                            if (array[0][0] && array[0][2] && array[2][0] && array[2][0])
+                                addToWallList(cells[i][j]);
+                            else
+                                addToCornerList(cells[i][j]);
+                        } else if (array[0][1]) {
+                            if (array[0][2] && array[0][0] && !array[2][1]) {
+                                addToWallList(cells[i][j]);
+                            } else {
+                                addToCornerList(cells[i][j]);
+                            }
+                        } else if (array[2][1]) {
+                            if (array[2][2] && array[2][0] && !array[0][1]) {
+                                addToWallList(cells[i][j]);
+                            } else {
+                                addToCornerList(cells[i][j]);
+                            }
+                        } else {
+                            addToWallList(cells[i][j]);
+                        }
+                    } else if (array[1][2]) {
+                        if ((array[0][1] && !array[2][1]) || (!array[0][1] && array[2][1])) {
+                            addToCornerList(cells[i][j]);
+                        } else {
+                            addToWallList(cells[i][j]);
+                        }
+                    } else if (array[1][0]) {
+                        if ((array[0][1] && !array[2][1]) || (!array[0][1] && array[2][1])) {
+                            addToCornerList(cells[i][j]);
+                        } else {
+                            addToWallList(cells[i][j]);
+                        }
+                    } else {
+                        addToWallList(cells[i][j]);
+                    }
+                }
+            }
+        }
+    }*/
+    }
+
     public void calculateExternalWallsOnArea(Point areaMin, Point areaMax) {
         for (int i = areaMin.X - coordinates.X; i < areaMax.X - coordinates.X; i++) {
             for (int j = areaMin.Y - coordinates.Y; j < areaMax.Y - coordinates.Y; j++) {
@@ -232,13 +311,17 @@ public class Grid {
                             wallList.remove(cells[i][j]);
                     } else {
                         if (wallList.contains(cells[i][j])) {
-                            if (cells[i][j].getCellType() == GridCell.CellType.wallInterior)
+                            if (cells[i][j].getCellType() == GridCell.CellType.wallInterior) {
                                 cells[i][j].setCellType(GridCell.CellType.justBuilt);
+                                MainGame.currentPlayer.currentMap.getGridCell(new Point(coordinates.X + i, coordinates.Y + j - 1)).setCellType(GridCell.CellType.justBuilt);
+                            }
                             wallList.remove(cells[i][j]);
                         }
                         if (cornerList.contains(cells[i][j])) {
-                            if (cells[i][j].getCellType() == GridCell.CellType.wallInterior)
+                            if (cells[i][j].getCellType() == GridCell.CellType.wallInterior) {
                                 cells[i][j].setCellType(GridCell.CellType.justBuilt);
+                                MainGame.currentPlayer.currentMap.getGridCell(new Point(coordinates.X + i, coordinates.Y + j - 1)).setCellType(GridCell.CellType.justBuilt);
+                            }
                             cornerList.remove(cells[i][j]);
                         }
                     }
@@ -270,24 +353,24 @@ public class Grid {
                     wall.setRegion(448, 64, 32, 32);
                 } else if (array[2][1]) {
                     wall.setRegion(384, 64, 32, 32);
-                } else  {
+                } else {
                     wall.setRegion(480, 64, 32, 32);
                 }
-            } else{
+            } else {
                 if (array[0][1] && array[2][1]) {
                     wall.setRegion(416, 96, 32, 32);
                 } else if (!array[0][1] && array[2][1]) {
                     wall.setRegion(384, 96, 32, 32);
                 } else if (array[0][1]) {
                     wall.setRegion(448, 96, 32, 32);
-                } else{
+                } else {
                     if (array[0][2] && array[2][2]) {
                         wall.setRegion(416, 0, 32, 32);
                     } else if (!array[0][2] && array[2][2]) {
                         wall.setRegion(384, 0, 32, 32);
                     } else if (array[0][2]) {
                         wall.setRegion(448, 0, 32, 32);
-                    } else{
+                    } else {
                         wall.setRegion(480, 96, 32, 32);
                     }
                 }
@@ -299,6 +382,7 @@ public class Grid {
 
             if (!array[1][0])
                 needABottom.add(corner);
+            corner.setRegion(32, 32, 32, 32);
 
             if (!array[1][2]) {
                 if (array[0][1] && array[2][1]) {
@@ -308,7 +392,7 @@ public class Grid {
                 } else if (array[2][1]) {
                     corner.setRegion(384, 64, 32, 32);
                 }
-            } else{
+            } else {
                 if (array[0][1] && array[2][1]) {
                     corner.setRegion(416, 32, 32, 32);
                 } else if (array[0][1]) {
@@ -319,18 +403,18 @@ public class Grid {
             }
         }
 
-        for (GridCell wallInterior: needABottom) {
-            GridCell wall = MainGame.currentPlayer.currentMap.getGridCell(new Point((int)wallInterior.getPosition().x,(int)wallInterior.getPosition().y - 1));
-                wall.setCellType(GridCell.CellType.wall);
+        for (GridCell wallInterior : needABottom) {
+            GridCell wall = MainGame.currentPlayer.currentMap.getGridCell(new Point((int) wallInterior.getPosition().x, (int) wallInterior.getPosition().y - 1));
+            wall.setCellType(GridCell.CellType.wall);
             boolean array[][] = checkSurroundings((int) wall.getPosition().x, (int) wall.getPosition().y, GridCell.CellType.wallInterior);
 
-            if(array[0][2] && array[2][2]){
+            if (array[0][2] && array[2][2]) {
                 wall.setRegion(416, 128, 32, 32);
-            }else if(array[0][2]){
+            } else if (array[0][2]) {
                 wall.setRegion(448, 128, 32, 32);
-            }else if(array[2][2]){
+            } else if (array[2][2]) {
                 wall.setRegion(384, 128, 32, 32);
-            }else{
+            } else {
                 wall.setRegion(480, 128, 32, 32);
             }
         }
