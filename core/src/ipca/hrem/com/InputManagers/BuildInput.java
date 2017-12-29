@@ -92,7 +92,6 @@ public class BuildInput extends InputManager {
         if (isBuildingWalls) {
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
             Grid newGrid = new Grid(Grid.GridType.interior, firstPosition, touchedPositionOnWorld);
-            newGrid.generateWalls();
             return true;
         } else {
 

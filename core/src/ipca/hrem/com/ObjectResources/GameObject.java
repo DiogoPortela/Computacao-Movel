@@ -14,24 +14,33 @@ public abstract class GameObject extends TouchableObject {
     public Sprite getSprite() {
         return sprite;
     }
+
     public Vector2 getPosition() {
         return position;
     }
+
     public void setPosition(Vector2 position) {
         this.position = position;
         this.sprite.setPosition(position.x * scale, position.y * scale);
     }
+
     public float getScale() {
         return scale;
     }
+
     public void setScale(float scale) {
         this.scale = scale;
         this.sprite.setScale(scale);
     }
 
-    //-------------------------Constructor-------------------------//
-    public GameObject(){
+    public void setRegion(int x, int y, int width, int height) {
+        sprite.setRegion(x, y, width, height);
     }
+
+    //-------------------------Constructor-------------------------//
+    public GameObject() {
+    }
+
     public GameObject(Vector2 position, float scale) {
         this.position = position;
         this.scale = scale;
@@ -46,9 +55,11 @@ public abstract class GameObject extends TouchableObject {
     }
 
     public abstract void update(float deltaTime);
+
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
     }
+
     public void dispose() {
         sprite.getTexture().dispose();
         position = null;
