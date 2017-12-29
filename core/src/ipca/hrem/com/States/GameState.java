@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import ipca.hrem.com.BasicResources.Date;
 import ipca.hrem.com.BasicResources.GameViewport;
+import ipca.hrem.com.BasicResources.Grid;
 import ipca.hrem.com.BasicResources.Map;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.MainGame;
@@ -35,6 +36,23 @@ public abstract class GameState extends State {
     private static Sprite menuBar;
     private static Sprite menuBackground;
 
+    private int[][] debugRestaurant = new int[][]{
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0},
+            {1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1},
+            {1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 4, 4, 4, 1},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 1},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 1},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 4, 4, 4, 1},
+            {1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 4, 4, 4, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1},
+            {0, 0, 0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
     //-------------------------GetSetters-------------------------//
     public static int getCurrentMenuSizeScreen() {
         return currentMenuSizeScreen;
@@ -46,9 +64,9 @@ public abstract class GameState extends State {
 
     public static void setCurrentMenuSize(float menuSize) {
         currentMenuSizeWorld = menuSize;
-        currentMenuSizeScreen = (int)(menuSize * Gdx.graphics.getBackBufferWidth() / gameScaleWidth);
+        currentMenuSizeScreen = (int) (menuSize * Gdx.graphics.getBackBufferWidth() / gameScaleWidth);
         currentViewport.update(new Point(currentMenuSizeScreen, 0), new Point(Gdx.graphics.getBackBufferWidth() - currentMenuSizeScreen, Gdx.graphics.getBackBufferHeight()));
-        currentMenuViewport.update(Point.Zero, new Point(currentMenuSizeScreen,  Gdx.graphics.getBackBufferHeight()));
+        currentMenuViewport.update(Point.Zero, new Point(currentMenuSizeScreen, Gdx.graphics.getBackBufferHeight()));
 
         menuBackground.setSize(currentMenuSizeWorld - 0.5f, gameScaleHeight);
         menuBar.setPosition(currentMenuSizeWorld - 0.5f, 0);
@@ -78,6 +96,8 @@ public abstract class GameState extends State {
         menuBackground.setPosition(0, 0);
 
         timeSpeed = 1.0f;
+
+        MainGame.currentPlayer.currentMap.getGridList().add(new Grid(debugRestaurant, 17, 15, new Point(10, 5)));
     }
 
     public GameState() {
