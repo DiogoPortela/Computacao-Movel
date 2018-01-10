@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class GraphGrid {
-    private Node[][] nodes = new Node[17][15];
+    public Node[][] nodes = new Node[17][15];
 
     int gridSizeX, gridSizeY;
 
@@ -21,19 +21,19 @@ public class GraphGrid {
     // tiles_costs - a 2d array, matching width and height, of tile prices.
     // 0.0f = Unwalkable tile || 1.0f = Walkable normal tile
     // > 1.0f = costly tile || < 1.0f = cheap tile
-    // public GraphGrid(int width, int height, float[][] tiles_costs )
-    // {
-    //     gridSizeX = width;
-    //     gridSizeY = height;
-    //     nodes = new Node[width][height];
-    //
-    // for (int x = 0; x < width; x++){
-    //         for (int y = 0; y <height; y++)
-    //        {
-    //             nodes[x, y] = new Node(tiles_costs[x, y], x, y);
-    //         }
-    //     }
-    // }
+     public GraphGrid(int width, int height, float[][] tiles_costs )
+     {
+         gridSizeX = width;
+         gridSizeY = height;
+         nodes = new Node[width][height];
+
+     for (int x = 0; x < width; x++){
+             for (int y = 0; y <height; y++)
+            {
+                 nodes[x][y] = new Node(tiles_costs[x][y], x, y);
+             }
+         }
+     }
 
     // Create a new graphgrid without tile prices, just walkable and unwalkable tiles
     // width - graphgrid width

@@ -19,13 +19,13 @@ public class Node {
     // Price - Price to walk on this node (set to 1.0f to ignore)
     // _gridX - Node x
     // _gridY - Node y
-    // public Node(float _price, int _gridX, int _gridY)
-    // {
-    //    walkable = _price != 0.0f;
-    //    price = _price;
-    //    gridX = _gridX;
-    //    gridY = _gridY;
-    // }
+     public Node(float _price, int _gridX, int _gridY)
+     {
+        walkable = _price != 0.0f;
+        price = _price;
+        gridX = _gridX;
+        gridY = _gridY;
+     }
 
     // Create the grid node
     // _walkable - Is this tile walkable?

@@ -137,6 +137,21 @@ public abstract class GameState extends State {
         currentMenuViewport.update(currentMenuSizeScreen, height, false);
     }
 
+    //DebuggingTestFunction
+    public boolean[][] Convertmapgridtobooleangrid(){
+        boolean[][] boolgrid = new boolean[17][15];
+
+        for (int x=0;x<17;x++){
+            for (int y=0;y<15;y++){
+                if (debugRestaurant[x][y] == 1)
+                    boolgrid[x][y] = false;
+                else
+                    boolgrid[x][y] = true;
+            }
+        }
+        return boolgrid;
+    }
+
     //-------------------------Abstracts-------------------------//
     protected abstract void renderMenu(SpriteBatch batch);
 
