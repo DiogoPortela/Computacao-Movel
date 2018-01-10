@@ -117,6 +117,8 @@ public class Pathfinding {
         //Heuristics
         private static int GetHeuristic(Node nodeA, Node nodeB){
             //Diagonal Movement Heuristic, permits movement in 8 different directions
+            //Since Diagonal movement has the same cost as normal movement this distance is known as Chebyshev Distance
+            //Loosely described as the normal movement a king can do in a chess game
             int D = 1, D2 = 1;
             int dx = Math.abs(nodeA.gridX - nodeB.gridX);
             int dy = Math.abs(nodeA.gridY - nodeB.gridY);
