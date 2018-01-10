@@ -40,7 +40,6 @@ public class Pathfinding {
         Node startNode = graphGrid.nodes[startPos.X][startPos.Y];
         Node targetNode = graphGrid.nodes[targetPos.X][targetPos.Y];
 
-        // ArrayList<Node> openSet = new ArrayList<Node>(); Same shit as below?
         ArrayList<Node> openSet = new ArrayList<Node>();
         HashSet<Node> closedSet = new HashSet<Node>();
         openSet.add(startNode);
@@ -117,6 +116,8 @@ public class Pathfinding {
         //Heuristics
         private static int GetHeuristic(Node nodeA, Node nodeB){
             //Diagonal Movement Heuristic, permits movement in 8 different directions
+            //Since Diagonal movement has the same cost as normal movement this distance is known as Chebyshev Distance
+            //Loosely described as the normal movement a king can do in a chess game
             int D = 1, D2 = 1;
             int dx = Math.abs(nodeA.gridX - nodeB.gridX);
             int dy = Math.abs(nodeA.gridY - nodeB.gridY);
