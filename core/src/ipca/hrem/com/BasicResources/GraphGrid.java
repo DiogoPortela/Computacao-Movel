@@ -15,6 +15,23 @@ import java.util.ListIterator;
 public class GraphGrid {
     public Node[][] nodes = new Node[17][15];
 
+    private int[][] debugRestaurant = new int[][]{
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0},
+            {1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1},
+            {1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 4, 4, 4, 1},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 1},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 1},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 4, 4, 4, 1},
+            {1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 4, 4, 4, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1},
+            {0, 0, 0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
     int gridSizeX, gridSizeY;
 
     // Create a new grid with tile prices
@@ -67,7 +84,7 @@ public class GraphGrid {
         }
     }
 
-    public GraphGrid(int[][] walkable_tiles)
+    public GraphGrid()
     {
         gridSizeX = 17;
         gridSizeY = 15;
@@ -76,7 +93,7 @@ public class GraphGrid {
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++){
-                if (walkable_tiles[x][y] == 1)
+                if (debugRestaurant[x][y] == 1)
                     nodes[x][y] = new Node(false, x, y);
                 else
                     nodes[x][y] = new Node(true, x, y);

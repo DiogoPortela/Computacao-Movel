@@ -3,6 +3,7 @@ package ipca.hrem.com.ObjectResources;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
+import ipca.hrem.com.BasicResources.GraphGrid;
 import ipca.hrem.com.BasicResources.Pathfinding;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
@@ -10,7 +11,7 @@ public class Client extends GameObject {
     //-------------------------Variables-------------------------//
     private Vector2 targetPosition;
     private float moveSpeed = 2.0f;
-
+    static GraphGrid clientGrid = new GraphGrid();
     //-------------------------GetSetters-------------------------//
 
     //-------------------------Constructor-------------------------/
@@ -29,6 +30,12 @@ public class Client extends GameObject {
             this.targetPosition = (Vector2) object;
             this.targetPosition.sub(new Vector2((scale /2.0f), scale / 2.0f));
         }
+    }
+
+    public void AssignGoal()
+    {
+        //if (Pathfinding.FindPath(clientGrid, this.targetPosition, ))
+
     }
 
     @Override

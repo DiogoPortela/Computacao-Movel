@@ -104,7 +104,7 @@ public abstract class GameState extends State {
     }
 
     public GameState() {
-        GraphGrid graph = new GraphGrid(debugRestaurant);
+
     }
 
     //-------------------------Functions-------------------------//
