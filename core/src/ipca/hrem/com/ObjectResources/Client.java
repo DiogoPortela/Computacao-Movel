@@ -10,6 +10,7 @@ public class Client extends GameObject {
     //-------------------------Variables-------------------------//
     private Vector2 targetPosition;
     private float moveSpeed = 2.0f;
+    private Pathfinding clientPathfinder;
 
     //-------------------------GetSetters-------------------------//
 

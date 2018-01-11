@@ -10,6 +10,7 @@ public class Employee extends GameObject {
     //-------------------------Variables-------------------------//
     private Vector2 targetPosition;
     private float moveSpeed = 2.0f;
+    private Pathfinding EmplPathfinder;
 
     //-------------------------GetSetters-------------------------//
 
