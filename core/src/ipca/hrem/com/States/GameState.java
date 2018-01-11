@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import ipca.hrem.com.BasicResources.Date;
 import ipca.hrem.com.BasicResources.GameViewport;
+import ipca.hrem.com.BasicResources.GraphGrid;
 import ipca.hrem.com.BasicResources.Grid;
 import ipca.hrem.com.BasicResources.Map;
 import ipca.hrem.com.BasicResources.Point;
@@ -98,9 +99,12 @@ public abstract class GameState extends State {
         timeSpeed = 1.0f;
 
         MainGame.currentPlayer.currentMap.getGridList().add(new Grid(debugRestaurant, 17, 15, new Point(10, 5)));
+
+
     }
 
     public GameState() {
+        GraphGrid graph = new GraphGrid(debugRestaurant);
     }
 
     //-------------------------Functions-------------------------//
@@ -135,21 +139,6 @@ public abstract class GameState extends State {
     public void resize(int width, int height) {
         currentViewport.update(width - currentMenuSizeScreen, height, false);
         currentMenuViewport.update(currentMenuSizeScreen, height, false);
-    }
-
-    //DebuggingTestFunction
-    public boolean[][] Convertmapgridtobooleangrid(){
-        boolean[][] boolgrid = new boolean[17][15];
-
-        for (int x=0;x<17;x++){
-            for (int y=0;y<15;y++){
-                if (debugRestaurant[x][y] == 1)
-                    boolgrid[x][y] = false;
-                else
-                    boolgrid[x][y] = true;
-            }
-        }
-        return boolgrid;
     }
 
     //-------------------------Abstracts-------------------------//

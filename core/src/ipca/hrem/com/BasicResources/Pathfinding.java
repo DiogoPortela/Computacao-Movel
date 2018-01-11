@@ -13,7 +13,7 @@ import java.util.Collections;
 
 public class Pathfinding {
     // Find a path between two points.
-    boolean ignorePrices = false;
+    //boolean ignorePrices = false;
     public static ArrayList<Point> FindPath(GraphGrid graphGrid, Point startPos, Point targetPos, boolean ignorePrices ){
         // Find path
         ArrayList<Node> nodes_path = ImpFindPath(graphGrid, startPos, targetPos, ignorePrices);
