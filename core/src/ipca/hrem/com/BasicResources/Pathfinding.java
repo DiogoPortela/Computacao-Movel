@@ -40,7 +40,6 @@ public class Pathfinding {
         Node startNode = graphGrid.nodes[startPos.X][startPos.Y];
         Node targetNode = graphGrid.nodes[targetPos.X][targetPos.Y];
 
-        // ArrayList<Node> openSet = new ArrayList<Node>(); Same shit as below?
         ArrayList<Node> openSet = new ArrayList<Node>();
         HashSet<Node> closedSet = new HashSet<Node>();
         openSet.add(startNode);
