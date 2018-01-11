@@ -99,11 +99,12 @@ public abstract class GameState extends State {
         timeSpeed = 1.0f;
 
         MainGame.currentPlayer.currentMap.getGridList().add(new Grid(debugRestaurant, 17, 15, new Point(10, 5)));
-        
+
 
     }
 
     public GameState() {
+        GraphGrid graph = new GraphGrid(debugRestaurant);
     }
 
     //-------------------------Functions-------------------------//
