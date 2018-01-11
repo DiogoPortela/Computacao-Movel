@@ -8,6 +8,7 @@ import ipca.hrem.com.ResourceManagers.TextureManager;
 public class Client extends GameObject {
     //-------------------------Variables-------------------------//
     private Vector2 targetPosition;
+    private float moveSpeed = 2.0f;
 
     //-------------------------GetSetters-------------------------//
 
