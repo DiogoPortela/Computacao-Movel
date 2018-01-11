@@ -3,12 +3,14 @@ package ipca.hrem.com.ObjectResources;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
+import ipca.hrem.com.BasicResources.Pathfinding;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
 public class Employee extends GameObject {
     //-------------------------Variables-------------------------//
     private Vector2 targetPosition;
     private float moveSpeed = 2.0f;
+    private Pathfinding EmplPathfinder;
 
     //-------------------------GetSetters-------------------------//
 
