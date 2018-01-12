@@ -63,6 +63,7 @@ public class Client extends GameObject {
                 path.remove(0);
             if (!path.isEmpty())
             {
+                isMoving = true;
                 Vector2 aux2 = new Vector2( path.get(0).X - this.position.x, path.get(0).Y - this.position.y);
                 if (aux2.len() > 0.1f)
                 {
