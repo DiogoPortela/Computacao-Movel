@@ -47,7 +47,7 @@ public abstract class State {
         return false;
     }
 
-    public UIObject findTouchedObject(Vector2 worldPosition) {
+    public TouchableObject findTouchedObject(Vector2 worldPosition) {
         for (UIObject obj : UIObjects) {
             if (obj.isVectorInside(worldPosition))
                 return obj;
@@ -66,8 +66,6 @@ public abstract class State {
     public abstract void update(float gameTime);
 
     public abstract void render(SpriteBatch spriteBatch);
-
-
 
     public abstract void resize(int width, int height);
 }

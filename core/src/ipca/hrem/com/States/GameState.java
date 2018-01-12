@@ -4,22 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.ArrayList;
-
-import ipca.hrem.com.BasicResources.Date;
 import ipca.hrem.com.BasicResources.GameViewport;
-import ipca.hrem.com.BasicResources.GraphGrid;
 import ipca.hrem.com.BasicResources.Grid;
-import ipca.hrem.com.BasicResources.Map;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.GameObject;
+import ipca.hrem.com.ObjectResources.TouchableObject;
 import ipca.hrem.com.ResourceManagers.TextureManager;
-import sun.applet.Main;
 
 //GameLogic goes here
 public abstract class GameState extends State {
@@ -32,7 +26,6 @@ public abstract class GameState extends State {
     public static GameViewport currentViewport, currentMenuViewport;
     private static int currentMenuSizeScreen;
     private static float currentMenuSizeWorld;
-    Client client;
     protected static float timeSpeed;
 
     private static Sprite menuBar;
@@ -100,8 +93,6 @@ public abstract class GameState extends State {
         timeSpeed = 1.0f;
 
         MainGame.currentPlayer.currentMap.getGridList().add(new Grid(debugRestaurant, 17, 15, new Point(10, 5)));
-        client = new Client(new Vector2(5,5), 1);
-
     }
 
     public GameState() {
@@ -109,13 +100,13 @@ public abstract class GameState extends State {
     }
 
     //-------------------------Functions-------------------------//
+
     @Override
     public void render(SpriteBatch batch) {
         currentViewport.apply();
         batch.setProjectionMatrix(MainGame.currentPlayer.gameCamera.combined);
         batch.begin();
         MainGame.currentPlayer.currentMap.render(batch);
-        client.render(batch);
         renderGame(batch);
         batch.end();
 
@@ -141,6 +132,15 @@ public abstract class GameState extends State {
     public void resize(int width, int height) {
         currentViewport.update(width - currentMenuSizeScreen, height, false);
         currentMenuViewport.update(currentMenuSizeScreen, height, false);
+    }
+
+    @Override
+    public TouchableObject findTouchedObject(Vector2 worldPosition) {
+        for (GameObject obj : MainGame.currentPlayer.allGameObjects){
+            if(obj.isVectorInside(worldPosition))
+                return obj;
+        }
+        return super.findTouchedObject(worldPosition);
     }
 
     //-------------------------Abstracts-------------------------//

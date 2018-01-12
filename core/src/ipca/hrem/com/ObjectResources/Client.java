@@ -56,7 +56,7 @@ public class Client extends GameObject {
         if (isWaiting && !isEating && !isMoving)
             patience -= 1 * deltaTime;
 
-        if (this.path != null)
+        if (this.path != null && this.path.size() != 0)
         {
             Vector2 aux = new Vector2( path.get(0).X - this.position.x, path.get(0).Y - this.position.y);
             if (aux.len() < 0.1f)

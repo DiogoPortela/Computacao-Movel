@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import ipca.hrem.com.MainGame;
+import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ObjectResources.UIResources.Button;
 import ipca.hrem.com.ObjectResources.UIResources.Clock;
@@ -16,6 +17,9 @@ public class LiveState extends GameState {
     private Button buildStateBtn;
     private Button menuStateBtn;
     private Clock clock;
+
+    Client client;
+
     //-------------------------GetSetters-------------------------//
 
     //-------------------------Constructor-------------------------//
@@ -83,12 +87,16 @@ public class LiveState extends GameState {
             }
         };
         addUIObject(menuStateBtn);
+
+        client = new Client(new Vector2(5,5), 1);
+        MainGame.currentPlayer.allGameObjects.add(client);
     }
 
     @Override
     public void update(float gameTime) {
         MainGame.currentPlayer.date.gameUpdate(gameTime * timeSpeed);
         clock.update(MainGame.currentPlayer.date);
+        client.update(gameTime);
     }
 
     @Override

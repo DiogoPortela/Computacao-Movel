@@ -7,6 +7,7 @@ import ipca.hrem.com.BasicResources.Grid;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.GridCell;
+import ipca.hrem.com.ObjectResources.TouchableObject;
 import ipca.hrem.com.ObjectResources.UIResources.Button;
 import ipca.hrem.com.ObjectResources.UIResources.UIObject;
 import ipca.hrem.com.States.BuildState;
@@ -59,7 +60,7 @@ public class BuildInput extends InputManager {
 
         } else {                                                //SE ESTIVER NO MENU.
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentMenuViewport.unproject(new Vector2(x, y)));
-            UIObject touchableObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
+            TouchableObject touchableObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
             if (touchableObjectSelectedThisFrame instanceof Button)
                 ((Button) touchableObjectSelectedThisFrame).onClick();
         }
