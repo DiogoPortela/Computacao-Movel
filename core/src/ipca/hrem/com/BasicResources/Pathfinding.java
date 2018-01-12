@@ -104,14 +104,14 @@ public class Pathfinding {
         private static int GetDistance(Node nodeA, Node nodeB)
         {
             return GetHeuristic(nodeA,nodeB);
-//            int dstX = Math.abs(nodeA.gridX - nodeB.gridX);
-//            int dstY = Math.abs(nodeA.gridY - nodeB.gridY);
-//
-//            if (dstX > dstY)
-//            {
-//                return 14 * dstY + 10 * (dstX - dstY);
-//            }
-//            return 14 * dstX +10 * (dstY - dstX);
+            /*int dstX = Math.abs(nodeA.gridX - nodeB.gridX);
+            int dstY = Math.abs(nodeA.gridY - nodeB.gridY);
+
+            if (dstX > dstY)
+            {
+                return 14 * dstY + 10 * (dstX - dstY);
+            }
+            return 14 * dstX +10 * (dstY - dstX);*/
         }
         //Heuristics
         private static int GetHeuristic(Node nodeA, Node nodeB){
