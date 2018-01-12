@@ -3,6 +3,7 @@ package ipca.hrem.com.InputManagers;
 
 import com.badlogic.gdx.math.Vector2;
 
+import ipca.hrem.com.ObjectResources.TouchableObject;
 import ipca.hrem.com.ObjectResources.UIResources.Button;
 import ipca.hrem.com.ObjectResources.UIResources.UIObject;
 import ipca.hrem.com.States.MenuState;
@@ -25,7 +26,7 @@ public class MenuInput extends InputManager{
     @Override
     public boolean tap(float x, float y, int count, int button) {
         Vector2 position = currentState.getCurrentViewport().unproject(new Vector2(x, y));
-        UIObject touchedUIObject = currentState.findTouchedObject(position);
+        TouchableObject touchedUIObject = currentState.findTouchedObject(position);
         if(touchedUIObject == null)
             return false;
         else if(touchedUIObject instanceof Button) {

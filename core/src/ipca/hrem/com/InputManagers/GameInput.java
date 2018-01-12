@@ -43,7 +43,7 @@ public class GameInput extends InputManager {
                 }
             } else {                                           //SE HOUVER ALGO SELECIONADO
                 //SE CARREGARES NO CHAO MOVE.
-                if (touchableObjectSelectedThisFrame == null && touchableObjectSelectedThisFrame instanceof GameObject) {
+                if (touchableObjectSelectedThisFrame == null) {
                     ((GameObject) currentState.getSelectedObject()).act(touchedPositionOnWorld);
                 }
                 //SE CARREGARES NOUTRO BONECO SELECIONA-O.
@@ -55,7 +55,7 @@ public class GameInput extends InputManager {
             }
         } else {                                                //SE ESTIVER NO MENU.
             Vector2 touchedPositionOnWorld = new Vector2(GameState.currentMenuViewport.unproject(new Vector2(x, y)));
-            UIObject touchableObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
+            TouchableObject touchableObjectSelectedThisFrame = currentState.findTouchedObject(touchedPositionOnWorld);
             if (touchableObjectSelectedThisFrame instanceof Button)
                 ((Button) touchableObjectSelectedThisFrame).onClick();
 
