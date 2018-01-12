@@ -16,6 +16,7 @@ import ipca.hrem.com.BasicResources.Grid;
 import ipca.hrem.com.BasicResources.Map;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.MainGame;
+import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 import sun.applet.Main;
@@ -31,7 +32,7 @@ public abstract class GameState extends State {
     public static GameViewport currentViewport, currentMenuViewport;
     private static int currentMenuSizeScreen;
     private static float currentMenuSizeWorld;
-
+    Client client;
     protected static float timeSpeed;
 
     private static Sprite menuBar;
@@ -99,7 +100,7 @@ public abstract class GameState extends State {
         timeSpeed = 1.0f;
 
         MainGame.currentPlayer.currentMap.getGridList().add(new Grid(debugRestaurant, 17, 15, new Point(10, 5)));
-
+        client = new Client(new Vector2(5,5), 1);
 
     }
 
@@ -114,6 +115,7 @@ public abstract class GameState extends State {
         batch.setProjectionMatrix(MainGame.currentPlayer.gameCamera.combined);
         batch.begin();
         MainGame.currentPlayer.currentMap.render(batch);
+        client.render(batch);
         renderGame(batch);
         batch.end();
 
