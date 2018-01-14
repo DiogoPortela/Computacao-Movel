@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.Employee;
+import ipca.hrem.com.ObjectResources.Table;
 import ipca.hrem.com.ObjectResources.TouchableObject;
 import ipca.hrem.com.ObjectResources.UIResources.Button;
 import ipca.hrem.com.ObjectResources.UIResources.UIObject;
@@ -50,7 +51,12 @@ public class GameInput extends InputManager {
                 else if (touchableObjectSelectedThisFrame instanceof Client || touchableObjectSelectedThisFrame instanceof Employee) {
                     currentState.setSelectedObject(touchableObjectSelectedThisFrame);
                 } else {
-                    //TOCAS NUM ITEM COM UM BONECO SELECTED.
+                    if(currentState.getSelectedObject() instanceof Client){
+                        if(((Table)touchableObjectSelectedThisFrame).isUsed() == false){
+                            ((Table)touchableObjectSelectedThisFrame).setUsed(true);
+                            ((Client)currentState.getSelectedObject()).act(touchableObjectSelectedThisFrame);
+                        }
+                    }
                 }
             }
         } else {                                                //SE ESTIVER NO MENU.

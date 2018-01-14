@@ -62,8 +62,7 @@ public class Room {
         this.maxItemsNumber = 0;
         objects = new HashMap<String, Texture>();
     }
-    public boolean CheckIfFits(float size, float maxSize)
-    {
+    public boolean CheckIfFits(float size, float maxSize) {
         if(size>maxSize)
             return false;
         else

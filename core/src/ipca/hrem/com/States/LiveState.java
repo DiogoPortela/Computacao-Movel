@@ -21,7 +21,7 @@ public class LiveState extends GameState {
     private Button menuStateBtn;
     private Clock clock;
 
-     private ArrayList<Client[]> clients;
+    private ArrayList<Client[]> clients;
     ClientGenerator clientGenerator;
 
 
@@ -31,6 +31,7 @@ public class LiveState extends GameState {
     public LiveState(float menuSize) {
         super(menuSize);
         onCreate();
+
     }
 
     public LiveState() {
@@ -109,6 +110,9 @@ public class LiveState extends GameState {
     public void update(float gameTime) {
         MainGame.currentPlayer.date.gameUpdate(gameTime * timeSpeed);
         clock.update(MainGame.currentPlayer.date);
+        for (GameObject obj : MainGame.currentPlayer.allGameObjects) {
+            obj.update(gameTime);                      //OPTIMIZE THIS.
+        }
         clientGenerator.update(gameTime);
     }
 

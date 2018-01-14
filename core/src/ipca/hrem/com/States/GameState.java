@@ -12,6 +12,7 @@ import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.GameObject;
+import ipca.hrem.com.ObjectResources.Table;
 import ipca.hrem.com.ObjectResources.TouchableObject;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 
@@ -93,6 +94,15 @@ public abstract class GameState extends State {
         timeSpeed = 1.0f;
 
         MainGame.currentPlayer.currentMap.getGridList().add(new Grid(debugRestaurant, 17, 15, new Point(10, 5)));
+
+        Table mesa = new Table(new Vector2(15,16));
+        MainGame.currentPlayer.allGameObjects.add(mesa);
+        Table mesa2 = new Table(new Vector2(19,16));
+        MainGame.currentPlayer.allGameObjects.add(mesa2);
+        Table mesa3 = new Table(new Vector2(15,13));
+        MainGame.currentPlayer.allGameObjects.add(mesa3);
+        Table mesa4 = new Table(new Vector2(19,13));
+        MainGame.currentPlayer.allGameObjects.add(mesa4);
     }
 
     public GameState() {

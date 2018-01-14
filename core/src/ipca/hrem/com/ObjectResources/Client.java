@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.Random;
 
+import ipca.hrem.com.BasicResources.GraphGrid;
 import ipca.hrem.com.BasicResources.Pathfinding;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.InputManagers.GameInput;
@@ -17,7 +18,8 @@ public class Client extends GameObject {
     //-------------------------Variables-------------------------//
     private Vector2 targetPosition;
     private float moveSpeed = 1.0f;
-    private boolean isMoving, isEating, isWaiting;
+    private static GraphGrid clientGrid = new GraphGrid();
+    private boolean isMoving, isEating, isWaiting, isLeaving;
     private float patience;
     private ArrayList<Point> path = new ArrayList<Point>();
     private String name;
@@ -27,13 +29,7 @@ public class Client extends GameObject {
 
     public enum nameType {male, female, apelido}
 
-
-    //-------------------------GetSetters-------------------------//
-
-
-
-
-
+    public Item usingItem;
 
     //-------------------------GetSetters-------------------------//
     @Override
@@ -63,6 +59,7 @@ public class Client extends GameObject {
         isWaiting = false;
         isMoving = false;
         isEating = false;
+        isLeaving =false;
         Random randPatience = new Random();
         patience = 100 + randPatience.nextInt(100) - 50;
         waitingMeter = 1;
@@ -78,6 +75,7 @@ public class Client extends GameObject {
         isWaiting = false;
         isMoving = false;
         isEating = false;
+        isLeaving =false;
         Random randPatience = new Random();
         patience = 100 + randPatience.nextInt(100) - 50;
         waitingMeter = 1;
@@ -91,6 +89,15 @@ public class Client extends GameObject {
             this.targetPosition.sub(new Vector2((scale /2.0f), scale / 2.0f));
             this.path = CalculatePath();
         }
+
+        if(object instanceof Table){
+            usingItem = (Table)object;
+            this.targetPosition = ((Table)object).position;
+            //this.targetPosition.sub(new Vector2((scale /2.0f), scale / 2.0f));
+            this.path = CalculatePath();
+            isEating = true;
+            isWaiting = false;
+        }
     }
 
     public ArrayList<Point> CalculatePath()
@@ -100,8 +107,12 @@ public class Client extends GameObject {
 
     @Override
     public void update(float deltaTime) {
-        if (isWaiting && !isEating && !isMoving)
+        if (isWaiting && !isEating && !isMoving) {
             patience -= 1 * deltaTime;
+            if(patience <= 0){
+                leave();
+            }
+        }
 
         if (this.path != null && this.path.size() != 0)
         {
@@ -122,17 +133,37 @@ public class Client extends GameObject {
             else {
                 isMoving = false;
             }
+        }
+
+        if(isEating){
+            patience += 2 * deltaTime;
+            if(patience >= 150){
+                leave();
+                ((Table)usingItem).setUsed(false);
+                usingItem = null;
+                isEating = false;
+            }
 
         }
 
-        /*Vector2 aux = new Vector2(this.targetPosition.x - this.position.x, this.targetPosition.y - this.position.y);
-        if (aux.len() > 0.1f){
-            aux.nor().scl(0.04f);
-            this.position.add(aux);
-            sprite.setPosition(position.x * scale, position.y * scale);
-        }*/
+        if(isLeaving){
+            Vector2 aux2 = new Vector2( 0 - this.position.x, 0 - this.position.y);
+            if (aux2.len() > 0.1f) {
+                //destroy.
+            }
+        }
     }
-    private int DepletingMeter(int waiting, State state, float deltaTime) {
+
+    private void leave(){
+        if(isLeaving == false) {
+            isLeaving = true;
+            this.targetPosition = Vector2.Zero;
+            //this.targetPosition.sub(new Vector2((scale / 2.0f), scale / 2.0f));
+            this.path = CalculatePath();
+        }
+
+    }
+    private int DepletingMeter(int wainting, State state, float deltaTime) {
         return 0;
     }
 }
