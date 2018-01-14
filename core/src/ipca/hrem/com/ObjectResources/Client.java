@@ -6,18 +6,17 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.Random;
 
-import ipca.hrem.com.BasicResources.GraphGrid;
 import ipca.hrem.com.BasicResources.Pathfinding;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.InputManagers.GameInput;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 import ipca.hrem.com.States.State;
+import ipca.hrem.com.Player;
 
 public class Client extends GameObject {
     //-------------------------Variables-------------------------//
     private Vector2 targetPosition;
     private float moveSpeed = 1.0f;
-    private static GraphGrid clientGrid = new GraphGrid();
     private boolean isMoving, isEating, isWaiting;
     private float patience;
     private ArrayList<Point> path = new ArrayList<Point>();
@@ -96,7 +95,7 @@ public class Client extends GameObject {
 
     public ArrayList<Point> CalculatePath()
     {
-        return Pathfinding.FindPath(clientGrid, Point.fromVector2(this.position), Point.fromVector2(this.targetPosition), true);
+        return Pathfinding.FindPath(Player.graphPath, Point.fromVector2(this.position), Point.fromVector2(this.targetPosition), true);
     }
 
     @Override
@@ -133,7 +132,7 @@ public class Client extends GameObject {
             sprite.setPosition(position.x * scale, position.y * scale);
         }*/
     }
-    private int DepletingMeter(int wainting, State state, float deltaTime) {
+    private int DepletingMeter(int waiting, State state, float deltaTime) {
         return 0;
     }
 }
