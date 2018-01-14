@@ -1,7 +1,11 @@
 package ipca.hrem.com.ObjectResources;
 
+import java.util.Collection;
+
 import ipca.hrem.com.BasicResources.Grid;
+import ipca.hrem.com.ObjectResources.InventoryChoices;
 import ipca.hrem.com.Player;
+import ipca.hrem.com.ResourceManagers.ClientGenerator;
 
 /**
  * Created by Ferna on 28/12/2017.
@@ -14,6 +18,7 @@ public class Finance {
     public float inventoryValue;
     public float expectedIncome;
 
+    private InventoryChoices inventoryChoices;
     //Getters and Setters
     public float getInitialMoney() {
         return initialMoney;
@@ -48,14 +53,38 @@ public class Finance {
 
     public boolean FinanceGridSizeCheck(Grid grid, float priceForTile, Player player) {
         if (grid.getGridWidth() * grid.getGridHeight() * priceForTile>
-        FinanceForTerrain(player.income.initialMoney))
-        return false;
+                FinanceForTerrain(player.income.initialMoney))
+            return false;
         else
-        return true;
+            return true;
     }
 
     public int FinanceForTerrain(float playerIncome) {
         return (int) playerIncome / 3;
+    }
+
+    public float Expenses(InventoryChoices inventoryChoices, float currentMoney, float inventoryValue)
+    {
+        float expenses=0;
+        Collection<Integer> quantaties=inventoryChoices.getInventoryItemsQuantity().values();
+        Collection<Float> values=inventoryChoices.getInventoryItemsValue().values();
+        for (int i:quantaties) {
+            for (float f:values) {
+                expenses+=i*f;
+            }
+        }
+        return expenses;
+    }
+
+    public static float ExpectedDemand (InventoryChoices inventoryChoices, ClientGenerator clientGenerator)
+    {
+        int numbClients=clientGenerator.getNumbClients();
+        int numbItems=0;
+        Collection<Integer> quantaties=inventoryChoices.getInventoryItemsQuantity().values();
+        for (int i:quantaties) {
+            numbItems+=i;
+        }
+        return numbItems/numbClients;
     }
 
 

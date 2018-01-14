@@ -3,11 +3,14 @@ package ipca.hrem.com.States;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ObjectResources.UIResources.Button;
 import ipca.hrem.com.ObjectResources.UIResources.Clock;
+import ipca.hrem.com.ResourceManagers.ClientGenerator;
 
 public class LiveState extends GameState {
     //-------------------------Variables-------------------------//
@@ -18,7 +21,9 @@ public class LiveState extends GameState {
     private Button menuStateBtn;
     private Clock clock;
 
-    Client client;
+     private ArrayList<Client[]> clients;
+    ClientGenerator clientGenerator;
+
 
     //-------------------------GetSetters-------------------------//
 
@@ -88,15 +93,23 @@ public class LiveState extends GameState {
         };
         addUIObject(menuStateBtn);
 
-        client = new Client(new Vector2(5,5), 1);
-        MainGame.currentPlayer.allGameObjects.add(client);
+        //client = new Client(new Vector2(5,5), 1);
+        clientGenerator= new ClientGenerator();
+        clients= new ArrayList<Client[]>();
+        clients=clientGenerator.getClients();
+        for (Client[] cs:clients) {
+            for (Client c:cs) {
+                MainGame.currentPlayer.allGameObjects.add(c);
+            }
+        }
+
     }
 
     @Override
     public void update(float gameTime) {
         MainGame.currentPlayer.date.gameUpdate(gameTime * timeSpeed);
         clock.update(MainGame.currentPlayer.date);
-        client.update(gameTime);
+        clientGenerator.update(gameTime);
     }
 
     @Override
