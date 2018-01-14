@@ -10,9 +10,12 @@ import ipca.hrem.com.BasicResources.GraphGrid;
 import ipca.hrem.com.BasicResources.Pathfinding;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.InputManagers.GameInput;
+import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ResourceManagers.TextureManager;
+import ipca.hrem.com.States.LiveState;
 import ipca.hrem.com.States.State;
 import ipca.hrem.com.Player;
+import sun.applet.Main;
 
 public class Client extends GameObject {
     //-------------------------Variables-------------------------//
@@ -147,9 +150,9 @@ public class Client extends GameObject {
         }
 
         if(isLeaving){
-            Vector2 aux2 = new Vector2( 0 - this.position.x, 0 - this.position.y);
-            if (aux2.len() > 0.1f) {
-                //destroy.
+            Vector2 aux2 = new Vector2( 0 - this.position.x, 5 - this.position.y);
+            if (aux2.len() < 0.1f) {
+                ((LiveState)MainGame.getCurrentState()).removeItem(this);
             }
         }
     }
@@ -157,7 +160,7 @@ public class Client extends GameObject {
     private void leave(){
         if(isLeaving == false) {
             isLeaving = true;
-            this.targetPosition = Vector2.Zero;
+            this.targetPosition = new Vector2(0, 5);
             //this.targetPosition.sub(new Vector2((scale / 2.0f), scale / 2.0f));
             this.path = CalculatePath();
         }

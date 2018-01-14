@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import ipca.hrem.com.MainGame;
 import ipca.hrem.com.ObjectResources.Client;
 import ipca.hrem.com.ObjectResources.Employee;
+import ipca.hrem.com.ObjectResources.Item;
 import ipca.hrem.com.ObjectResources.Table;
 import ipca.hrem.com.ObjectResources.TouchableObject;
 import ipca.hrem.com.ObjectResources.UIResources.Button;
@@ -50,7 +51,7 @@ public class GameInput extends InputManager {
                 //SE CARREGARES NOUTRO BONECO SELECIONA-O.
                 else if (touchableObjectSelectedThisFrame instanceof Client || touchableObjectSelectedThisFrame instanceof Employee) {
                     currentState.setSelectedObject(touchableObjectSelectedThisFrame);
-                } else {
+                } else if(touchableObjectSelectedThisFrame instanceof Item){
                     if(currentState.getSelectedObject() instanceof Client){
                         if(((Table)touchableObjectSelectedThisFrame).isUsed() == false){
                             ((Table)touchableObjectSelectedThisFrame).setUsed(true);

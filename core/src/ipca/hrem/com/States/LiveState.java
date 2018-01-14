@@ -1,5 +1,6 @@
 package ipca.hrem.com.States;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -24,8 +25,19 @@ public class LiveState extends GameState {
     private ArrayList<Client[]> clients;
     ClientGenerator clientGenerator;
 
+    private ArrayList<GameObject> toRemove;
+
 
     //-------------------------GetSetters-------------------------//
+
+
+    public ArrayList<Client[]> getClients() {
+        return clients;
+    }
+
+    public void setClients(ArrayList<Client[]> clients) {
+        this.clients = clients;
+    }
 
     //-------------------------Constructor-------------------------//
     public LiveState(float menuSize) {
@@ -103,7 +115,7 @@ public class LiveState extends GameState {
                 MainGame.currentPlayer.allGameObjects.add(c);
             }
         }
-
+        toRemove = new ArrayList<GameObject>();
     }
 
     @Override
@@ -113,6 +125,10 @@ public class LiveState extends GameState {
         for (GameObject obj : MainGame.currentPlayer.allGameObjects) {
             obj.update(gameTime);                      //OPTIMIZE THIS.
         }
+        for (GameObject obj: toRemove) {
+            MainGame.currentPlayer.allGameObjects.remove(obj);
+        }
+        toRemove = new ArrayList<GameObject>();
         clientGenerator.update(gameTime);
     }
 
@@ -131,5 +147,9 @@ public class LiveState extends GameState {
         for (GameObject obj : MainGame.currentPlayer.allGameObjects) {
             obj.render(batch);                      //OPTIMIZE THIS.
         }
+    }
+    public void removeItem(GameObject obj){
+        toRemove.add(obj);
+        clients.remove(obj);
     }
 }
