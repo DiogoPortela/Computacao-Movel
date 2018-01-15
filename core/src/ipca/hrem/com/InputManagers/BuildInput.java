@@ -91,7 +91,7 @@ public class BuildInput extends InputManager {
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
         if (isBuildingWalls) {
-            Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
+                Vector2 touchedPositionOnWorld = new Vector2(GameState.currentViewport.unproject(new Vector2(x, y)));
             Grid newGrid = new Grid(Grid.GridType.interior, firstPosition, touchedPositionOnWorld);
             return true;
         } else {
