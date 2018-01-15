@@ -148,16 +148,20 @@ public class Client extends GameObject {
 
             sprite.setColor(1f, 1f - waitingMeter, 1f - waitingMeter, 1);
 
-            patience -= 1 * waitingMeter*0.05f;
+            patience -= 1 * deltaTime;
         }
 
-        if (patience <= 0) {
+        if (patience <= 0 || patience >= 350) {
             leave();
+            if(usingItem != null){
+                ((Table) usingItem).setUsed(false);
+                usingItem = null;
+                isEating = false;
+            }
         }
 
 
         if (this.path != null && this.path.size() != 0)
-
         {
             Vector2 aux = new Vector2(path.get(0).X - this.position.x, path.get(0).Y - this.position.y);
             if (aux.len() < 0.1f)
@@ -178,13 +182,13 @@ public class Client extends GameObject {
         if (isEating)
 
         {
-            patience += 2 * deltaTime;
-            if (patience >= 150) {
-                leave();
-                ((Table) usingItem).setUsed(false);
-                usingItem = null;
-                isEating = false;
-            }
+            patience += 5 * deltaTime;
+//            if (patience >= 350) {
+//                leave();
+//                ((Table) usingItem).setUsed(false);
+//                usingItem = null;
+//                isEating = false;
+//            }
 
         }
 

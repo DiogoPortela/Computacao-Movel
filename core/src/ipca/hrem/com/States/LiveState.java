@@ -1,6 +1,7 @@
 package ipca.hrem.com.States;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,6 +13,7 @@ import ipca.hrem.com.ObjectResources.GameObject;
 import ipca.hrem.com.ObjectResources.UIResources.Button;
 import ipca.hrem.com.ObjectResources.UIResources.Clock;
 import ipca.hrem.com.ResourceManagers.ClientGenerator;
+import sun.applet.Main;
 
 public class LiveState extends GameState {
     //-------------------------Variables-------------------------//
@@ -102,6 +104,9 @@ public class LiveState extends GameState {
         menuStateBtn = new Button(new Vector2(0.1f, 0.1f), new Vector2(2.0f, 1.0f), new Vector2(0, 64 ), new Vector2(64, 32)) {
             @Override
             public void onClick() {
+                MainGame.currentPlayer.income.currentMoneyCalculation(MainGame.currentPlayer.income.currentMoney, clients);
+                MainGame.currentPlayer.income.ScoreCalculation(MainGame.currentPlayer, Gdx.graphics.getDeltaTime());
+                MainGame.setCurrentState(new ScoreState());
             }
         };
         addUIObject(menuStateBtn);

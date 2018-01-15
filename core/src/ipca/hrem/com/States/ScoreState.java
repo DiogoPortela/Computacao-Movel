@@ -48,8 +48,12 @@ public class ScoreState extends State {
 
     @Override
     public void render(SpriteBatch spriteBatch) {
+        currentViewport.apply();
+        spriteBatch.setProjectionMatrix(currentCamera.combined);
+        spriteBatch.begin();
         back.render(spriteBatch);
-        //bitmapFont.draw(spriteBatch, MainGame.currentPlayer.score, getCurrentViewport().getWorldWidth() / 2.0f - 0.5f,getCurrentViewport().getWorldHeight() / 2.0f + 1.5f);
+        bitmapFont.draw(spriteBatch, Float.toString(MainGame.currentPlayer.score), getCurrentViewport().getWorldWidth() / 2.0f - 0.5f,getCurrentViewport().getWorldHeight() / 2.0f + 1.5f);
+        spriteBatch.end();
     }
 
     @Override

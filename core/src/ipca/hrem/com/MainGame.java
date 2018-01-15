@@ -12,10 +12,12 @@ import ipca.hrem.com.InputManagers.BuildInput;
 import ipca.hrem.com.InputManagers.GameInput;
 import ipca.hrem.com.InputManagers.InputManager;
 import ipca.hrem.com.InputManagers.MenuInput;
+import ipca.hrem.com.InputManagers.ScoreInput;
 import ipca.hrem.com.ResourceManagers.FontManager;
 import ipca.hrem.com.States.BuildState;
 import ipca.hrem.com.States.GameState;
 import ipca.hrem.com.States.LiveState;
+import ipca.hrem.com.States.ScoreState;
 import ipca.hrem.com.States.State;
 import ipca.hrem.com.ResourceManagers.TextureManager;
 import ipca.hrem.com.States.MenuState;
@@ -49,6 +51,8 @@ public class MainGame extends ApplicationAdapter {
         }
         else if(newState instanceof MenuState){
             setInputManager(new MenuInput((MenuState) currentState));
+        } else if(newState instanceof ScoreState){
+            setInputManager(new ScoreInput((ScoreState) currentState));
         }
     }
 

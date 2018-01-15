@@ -18,7 +18,7 @@ public class Player {
     public Date date;
     public Finance income;
     public static GraphGrid graphPath;
-    float score;
+    public float score;
     boolean gameOver;
 
 
