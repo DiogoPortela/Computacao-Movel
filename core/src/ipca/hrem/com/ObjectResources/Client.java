@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.Random;
 
-import ipca.hrem.com.BasicResources.GraphGrid;
 import ipca.hrem.com.BasicResources.Pathfinding;
 import ipca.hrem.com.BasicResources.Point;
 import ipca.hrem.com.InputManagers.GameInput;
@@ -21,7 +20,6 @@ public class Client extends GameObject {
     //-------------------------Variables-------------------------//
     private Vector2 targetPosition;
     private float moveSpeed = 1.0f;
-    private static GraphGrid clientGrid = new GraphGrid();
     private boolean isMoving, isEating, isWaiting, isLeaving;
     private float patience;
     private ArrayList<Point> path = new ArrayList<Point>();
