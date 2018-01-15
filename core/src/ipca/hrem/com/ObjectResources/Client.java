@@ -1,6 +1,9 @@
 package ipca.hrem.com.ObjectResources;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public class Client extends GameObject {
     private nameType nameGender;
     private int randomNumb;
     private float waitingMeter;
+    BitmapFont bitmapFont;
+    private float money;
 
     public enum nameType {male, female, apelido}
 
@@ -41,6 +46,7 @@ public class Client extends GameObject {
     public String getName() {
         return name;
     }
+
     public int getRandomNumb() {
         return randomNumb;
     }
@@ -48,6 +54,19 @@ public class Client extends GameObject {
     public void setName(String name) {
         this.name = name;
     }
+
+    public boolean isLeaving() {
+        return isLeaving;
+    }
+
+    public float getPatience() {
+        return patience;
+    }
+
+    public float getMoney() {
+        return money;
+    }
+
     //-------------------------Constructor-------------------------/
     public Client(Vector2 position, float scale, int randomNumb, nameType nameGender) {
         super(position, scale);
@@ -60,11 +79,15 @@ public class Client extends GameObject {
         isWaiting = false;
         isMoving = false;
         isEating = false;
-        isLeaving =false;
+        isLeaving = false;
         Random randPatience = new Random();
-        patience = 100 + randPatience.nextInt(100) - 50;
-        waitingMeter = 1;
+        patience = 300 + randPatience.nextInt(100) - 50;
+        money = 20 + randPatience.nextInt(80);
+        waitingMeter = 0;
+        bitmapFont = new BitmapFont(Gdx.files.internal("anotherarialsmaller.fnt"));
+        bitmapFont.getData().setScale(0.05f);
     }
+
     public Client(Vector2 position, float scale) {
         super(position, scale);
         sprite = new Sprite(TextureManager.loadTexture("Cliente001.png"));
@@ -76,7 +99,7 @@ public class Client extends GameObject {
         isWaiting = false;
         isMoving = false;
         isEating = false;
-        isLeaving =false;
+        isLeaving = false;
         Random randPatience = new Random();
         patience = 100 + randPatience.nextInt(100) - 50;
         waitingMeter = 1;
@@ -87,13 +110,13 @@ public class Client extends GameObject {
     public void act(Object object) {
         if (object.getClass() == Vector2.class) {
             this.targetPosition = (Vector2) object;
-            this.targetPosition.sub(new Vector2((scale /2.0f), scale / 2.0f));
+            this.targetPosition.sub(new Vector2((scale / 2.0f), scale / 2.0f));
             this.path = CalculatePath();
         }
 
-        if(object instanceof Table){
-            usingItem = (Table)object;
-            this.targetPosition = ((Table)object).position;
+        if (object instanceof Table) {
+            usingItem = (Table) object;
+            this.targetPosition = ((Table) object).position;
             //this.targetPosition.sub(new Vector2((scale /2.0f), scale / 2.0f));
             this.path = CalculatePath();
             isEating = true;
@@ -101,62 +124,84 @@ public class Client extends GameObject {
         }
     }
 
-    public ArrayList<Point> CalculatePath()
-    {
+    public ArrayList<Point> CalculatePath() {
         return Pathfinding.FindPath(Player.graphPath, Point.fromVector2(this.position), Point.fromVector2(this.targetPosition), true);
     }
 
     @Override
+    public void render(SpriteBatch batch) {
+        //Para fazer aparecer as letras
+        //bitmapFont.draw(batch, this.getName(), this.position.x-1 ,this.position.y+1);
+        super.render(batch);
+    }
+
+    @Override
     public void update(float deltaTime) {
-        if (isWaiting && !isEating && !isMoving) {
-            patience -= 1 * deltaTime;
-            if(patience <= 0){
-                leave();
-            }
+        if (!isEating && !isLeaving) {
+            isWaiting = true;
+        }
+        if ((isWaiting || isMoving) && (!isEating || !isLeaving)) {
+            if (waitingMeter > 1f)
+                waitingMeter = 1;
+            else
+                waitingMeter += deltaTime * 0.005f;
+
+            sprite.setColor(1f, 1f - waitingMeter, 1f - waitingMeter, 1);
+
+            patience -= 1 * waitingMeter*0.05f;
         }
 
+        if (patience <= 0) {
+            leave();
+        }
+
+
         if (this.path != null && this.path.size() != 0)
+
         {
-            Vector2 aux = new Vector2( path.get(0).X - this.position.x, path.get(0).Y - this.position.y);
+            Vector2 aux = new Vector2(path.get(0).X - this.position.x, path.get(0).Y - this.position.y);
             if (aux.len() < 0.1f)
                 path.remove(0);
-            if (!path.isEmpty())
-            {
+            if (!path.isEmpty()) {
                 isMoving = true;
-                Vector2 aux2 = new Vector2( path.get(0).X - this.position.x, path.get(0).Y - this.position.y);
-                if (aux2.len() > 0.1f)
-                {
+                Vector2 aux2 = new Vector2(path.get(0).X - this.position.x, path.get(0).Y - this.position.y);
+                if (aux2.len() > 0.1f) {
                     aux2.nor().scl(0.04f);
                     this.position.add(aux2);
                     sprite.setPosition(position.x * scale, position.y * scale);
                 }
-            }
-            else {
+            } else {
                 isMoving = false;
             }
         }
 
-        if(isEating){
+        if (isEating)
+
+        {
             patience += 2 * deltaTime;
-            if(patience >= 150){
+            if (patience >= 150) {
                 leave();
-                ((Table)usingItem).setUsed(false);
+                ((Table) usingItem).setUsed(false);
                 usingItem = null;
                 isEating = false;
             }
 
         }
 
-        if(isLeaving){
-            Vector2 aux2 = new Vector2( 0 - this.position.x, 5 - this.position.y);
+        if (isLeaving)
+
+        {
+            Vector2 aux2 = new Vector2(0 - this.position.x, 5 - this.position.y);
             if (aux2.len() < 0.1f) {
-                ((LiveState)MainGame.getCurrentState()).removeItem(this);
+                ((LiveState) MainGame.getCurrentState()).removeItem(this);
             }
         }
+
     }
 
-    private void leave(){
-        if(isLeaving == false) {
+
+    private void leave() {
+        if (isLeaving == false) {
             isLeaving = true;
             this.targetPosition = new Vector2(0, 5);
             //this.targetPosition.sub(new Vector2((scale / 2.0f), scale / 2.0f));
@@ -164,6 +209,7 @@ public class Client extends GameObject {
         }
 
     }
+
     private int DepletingMeter(int wainting, State state, float deltaTime) {
         return 0;
     }

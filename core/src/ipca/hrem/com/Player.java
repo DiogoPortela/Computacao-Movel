@@ -18,9 +18,16 @@ public class Player {
     public Date date;
     public Finance income;
     public static GraphGrid graphPath;
+    float score;
+    boolean gameOver;
+
 
     //-------------------------GetSetters-------------------------//
+    public float getScore() {return score; }
 
+    public boolean isGameOver() {return gameOver;}
+
+    public void setScore(float score) {this.score = score;}
     //-------------------------Constructor-------------------------//
     public Player(){
         gameCamera = new OrthographicCamera();
@@ -28,6 +35,9 @@ public class Player {
         allGameObjects = new ArrayList<GameObject>();
         date = new Date();
         graphPath = new GraphGrid();
+        income= new Finance(100, 0, 0);
+        gameOver=false;
+        score=0;
     }
     //-------------------------Functions-------------------------//
 }
